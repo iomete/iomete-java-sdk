@@ -2,6 +2,7 @@ package com.iomete.sdk.spark.job;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.iomete.sdk.client.*;
 import com.iomete.sdk.error.ApiError;
 import com.iomete.sdk.models.DetailOutputModel;
@@ -17,12 +18,12 @@ import java.util.List;
 
 
 public class SparkJobClient implements SdkClient {
-    private static final String BASE_PATH = "/api/v1/spark-job";
+    private static final String BASE_PATH = "/api/v1/spark-jobs";
 
     private static final Logger logger = LogManager.getLogger(SparkJobClient.class);
 
     private final RestClient restClient;
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     public SparkJobClient(SdkClientConfiguration config) {
         this.restClient = new RestClient(config);

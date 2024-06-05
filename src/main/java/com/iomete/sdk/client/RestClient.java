@@ -20,30 +20,30 @@ public class RestClient {
         this.config = config;
     }
 
-    public <T> T get(String url, ResponseHandler<T> responseHandler) throws ApiError, IOException {
-        HttpGet request = new HttpGet(url);
+    public <T> T get(String urlPath, ResponseHandler<T> responseHandler) throws ApiError, IOException {
+        HttpGet request = new HttpGet(config.getEndpoint() + urlPath);
 
-        return executeRequest(request, url, responseHandler);
+        return executeRequest(request, urlPath, responseHandler);
     }
 
-    public <T> T post(String url, String jsonPayload, ResponseHandler<T> responseHandler) throws ApiError, IOException {
-        HttpPost request = new HttpPost(url);
+    public <T> T post(String urlPath, String jsonPayload, ResponseHandler<T> responseHandler) throws ApiError, IOException {
+        HttpPost request = new HttpPost(config.getEndpoint() + urlPath);
         request.setEntity(new StringEntity(jsonPayload));
 
-        return executeRequest(request, url, responseHandler);
+        return executeRequest(request, urlPath, responseHandler);
     }
 
-    public <T> T put(String url, String jsonPayload, ResponseHandler<T> responseHandler) throws ApiError, IOException {
-        HttpPut request = new HttpPut(url);
+    public <T> T put(String urlPath, String jsonPayload, ResponseHandler<T> responseHandler) throws ApiError, IOException {
+        HttpPut request = new HttpPut(config.getEndpoint() + urlPath);
         request.setEntity(new StringEntity(jsonPayload));
 
-        return executeRequest(request, url, responseHandler);
+        return executeRequest(request, urlPath, responseHandler);
     }
 
-    public <T> T delete(String url, ResponseHandler<T> responseHandler) throws ApiError, IOException {
-        HttpDelete request = new HttpDelete(url);
+    public <T> T delete(String urlPath, ResponseHandler<T> responseHandler) throws ApiError, IOException {
+        HttpDelete request = new HttpDelete(config.getEndpoint() + urlPath);
 
-        return executeRequest(request, url, responseHandler);
+        return executeRequest(request, urlPath, responseHandler);
     }
 
     private <T> T executeRequest(HttpUriRequest request, String url, ResponseHandler<T> responseHandler) throws ApiError, IOException {

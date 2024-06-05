@@ -1,14 +1,16 @@
 package com.iomete.sdk.models;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.PrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public abstract class JsonModel<T> {
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     public String toJson() {
         try {
-            return objectMapper.writeValueAsString(this);
+            return objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Error converting to JSON", e);
         }

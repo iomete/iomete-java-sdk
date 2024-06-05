@@ -4,7 +4,18 @@ package com.iomete.sdk.spark.job.models;
 public class InstanceConfig {
     private String driverType;
     private String executorType;
-    private int executorCount = 2;
+    private int executorCount = 1;
+
+    public InstanceConfig(String driverType, String executorType) {
+        this.driverType = driverType;
+        this.executorType = executorType;
+    }
+
+    public InstanceConfig(String driverType, String executorType, int executorCount) {
+        this.driverType = driverType;
+        this.executorType = executorType;
+        this.executorCount = executorCount;
+    }
 
     public String getDriverType() {
         return driverType;

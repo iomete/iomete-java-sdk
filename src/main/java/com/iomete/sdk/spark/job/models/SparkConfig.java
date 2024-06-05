@@ -12,18 +12,15 @@ public class SparkConfig {
     private String image;
     private List<String> imagePullSecrets;
     private String mainClass;
-    private String mainApplicationFile = "";
-    private String applicationType = ""; // jvm, python
-    private String pythonScript;
+    private String mainApplicationFile = "spark-internal";
+    private String applicationType = "jvm"; // jvm, python
     private List<String> arguments;
     private Map<String, String> envVars;
     private String javaOptions;
     private Map<String, String> sparkConf;
-    private Map<String, String> hadoopConf;
     private Dependencies deps;
-    private RestartPolicy restartPolicy;
     private List<ConfigMap> configMaps;
-    private InstanceConfig instanceConfig = new InstanceConfig();
+    private InstanceConfig instanceConfig;
     private String volumeId;
 
     public String getSparkVersion() {
@@ -38,7 +35,7 @@ public class SparkConfig {
         return isDocker;
     }
 
-    public void setDocker(boolean docker) {
+    public void setIsDocker(boolean docker) {
         isDocker = docker;
     }
 
@@ -82,14 +79,6 @@ public class SparkConfig {
         this.applicationType = applicationType;
     }
 
-    public String getPythonScript() {
-        return pythonScript;
-    }
-
-    public void setPythonScript(String pythonScript) {
-        this.pythonScript = pythonScript;
-    }
-
     public List<String> getArguments() {
         return arguments;
     }
@@ -122,28 +111,12 @@ public class SparkConfig {
         this.sparkConf = sparkConf;
     }
 
-    public Map<String, String> getHadoopConf() {
-        return hadoopConf;
-    }
-
-    public void setHadoopConf(Map<String, String> hadoopConf) {
-        this.hadoopConf = hadoopConf;
-    }
-
     public Dependencies getDeps() {
         return deps;
     }
 
     public void setDeps(Dependencies deps) {
         this.deps = deps;
-    }
-
-    public RestartPolicy getRestartPolicy() {
-        return restartPolicy;
-    }
-
-    public void setRestartPolicy(RestartPolicy restartPolicy) {
-        this.restartPolicy = restartPolicy;
     }
 
     public List<ConfigMap> getConfigMaps() {
