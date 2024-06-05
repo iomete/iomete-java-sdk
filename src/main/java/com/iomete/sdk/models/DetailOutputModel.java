@@ -3,28 +3,28 @@ package com.iomete.sdk.models;
 /**
  * Model representing detailed output with an item and its permissions.
  */
-public class DetailOutputModel {
+public class DetailOutputModel<T> {
     /**
      * The detailed item.
      */
-    private Object item;
+    private T item;
 
     /**
      * The permissions associated with the item.
      */
     private ResourcePermissionsModel permissions;
 
-    public DetailOutputModel(Object item, ResourcePermissionsModel permissions) {
+    public DetailOutputModel(T item, ResourcePermissionsModel permissions) {
         this.item = item;
         this.permissions = permissions;
     }
 
     // Getters and Setters
-    public Object getItem() {
+    public T getItem() {
         return item;
     }
 
-    public void setItem(Object item) {
+    public void setItem(T item) {
         this.item = item;
     }
 

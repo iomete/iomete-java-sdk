@@ -1,4 +1,4 @@
-package com.iomete.sdk.models;
+package com.iomete.sdk.error;
 
 public class ApiError extends RuntimeException {
     private final int statusCode;

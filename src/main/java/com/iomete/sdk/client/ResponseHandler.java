@@ -1,6 +1,6 @@
 package com.iomete.sdk.client;
 
-import com.iomete.sdk.models.ApiError;
+import com.iomete.sdk.error.ApiError;
 import org.apache.http.client.methods.CloseableHttpResponse;
 
 import java.io.IOException;
@@ -9,3 +9,4 @@ import java.io.IOException;
 public interface ResponseHandler<T> {
     T handleResponse(CloseableHttpResponse response) throws IOException, ApiError;
 }
+

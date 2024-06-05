@@ -1,15 +1,12 @@
 package com.iomete.sdk.spark.job;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.iomete.sdk.client.ResponseHandler;
-import com.iomete.sdk.client.RestClient;
-import com.iomete.sdk.client.SdkClient;
-import com.iomete.sdk.client.SdkClientConfiguration;
-import com.iomete.sdk.models.ApiError;
-import com.iomete.sdk.spark.job.models.SparkConfigOverride;
-import com.iomete.sdk.spark.job.models.SparkJobCreateInput;
-import com.iomete.sdk.spark.job.models.SparkJobResponse;
-import com.iomete.sdk.spark.job.models.SparkJobUpdateInput;
+import com.iomete.sdk.client.*;
+import com.iomete.sdk.error.ApiError;
+import com.iomete.sdk.models.DetailOutputModel;
+import com.iomete.sdk.models.ListOutputModel;
+import com.iomete.sdk.spark.job.models.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,128 +29,135 @@ public class SparkJobClient implements SdkClient {
         logger.info("IOMETE SparkJobClient initialized with base URL: " + config.getEndpoint());
     }
 
-    public String createJob(SparkJobCreateInput input) throws ApiError, IOException {
-        String payload = objectMapper.writeValueAsString(input);
+    public SparkJobResponse createJob(SparkJobCreateInput input) throws ApiError, IOException {
+        String jsonRequest = objectMapper.writeValueAsString(input);
 
         try {
-            return restClient.post(BASE_PATH, payload, defaultHandler200);
+            String jsonResponse = restClient.post(BASE_PATH, jsonRequest, defaultHandler200);
+            return objectMapper.readValue(jsonResponse, SparkJobResponse.class);
         } catch (ApiError | IOException e) {
             logger.error("Failed to create job: " + e.getLocalizedMessage());
             throw e;
         }
     }
 
-    public String updateJob(String jobId, SparkJobUpdateInput input) throws ApiError, IOException {
-        String payload = objectMapper.writeValueAsString(input);
+    public SparkJobResponse updateJob(String jobId, SparkJobUpdateInput input) throws ApiError, IOException {
+        String jsonRequest = objectMapper.writeValueAsString(input);
         String url = BASE_PATH + "/" + jobId;
 
         try {
-            return restClient.put(url, payload, defaultHandler200);
+            String jsonResponse = restClient.put(url, jsonRequest, defaultHandler200);
+            return objectMapper.readValue(jsonResponse, SparkJobResponse.class);
         } catch (ApiError | IOException e) {
             logger.error("Failed to update job: " + e.getLocalizedMessage());
             throw e;
         }
     }
 
-    public List<SparkJobResponse> getJobs() throws ApiError, IOException {
+    public ListOutputModel<SparkJobResponse> getJobs() throws ApiError, IOException {
         try {
             String jsonResponse = restClient.get(BASE_PATH, defaultHandler200);
-            return objectMapper.readValue(jsonResponse, objectMapper.getTypeFactory().constructCollectionType(List.class, SparkJobResponse.class));
+            return objectMapper.readValue(jsonResponse, new TypeReference<>() {});
         } catch (ApiError | IOException e) {
             logger.error("Failed to get jobs: " + e.getLocalizedMessage());
             throw e;
         }
     }
 
-    public SparkJobResponse getJobById(String jobId) throws ApiError, IOException {
+    public DetailOutputModel<SparkJobResponse> getJobById(String jobId) throws ApiError, IOException {
         String url = BASE_PATH + "/" + jobId;
 
         try {
             String jsonResponse = restClient.get(url, defaultHandler200);
-            return objectMapper.readValue(jsonResponse, SparkJobResponse.class);
+            return objectMapper.readValue(jsonResponse, new TypeReference<>() {});
         } catch (ApiError | IOException e) {
             logger.error("Failed to get job by ID: " + e.getLocalizedMessage());
             throw e;
         }
     }
 
-    public String deleteJobById(String jobId) throws ApiError, IOException {
+    public SparkJobResponse deleteJobById(String jobId) throws ApiError, IOException {
         String url = BASE_PATH + "/" + jobId;
 
         try {
-            return restClient.delete(url, defaultHandler200);
+            String jsonResponse = restClient.delete(url, defaultHandler200);
+            return objectMapper.readValue(jsonResponse, SparkJobResponse.class);
         } catch (ApiError | IOException e) {
             logger.error("Failed to delete job by ID: " + e.getLocalizedMessage());
             throw e;
         }
     }
 
-    public String getJobRuns(String jobId) throws ApiError, IOException {
+    public List<RunOutput> getJobRuns(String jobId) throws ApiError, IOException {
         String url = BASE_PATH + "/" + jobId + "/runs";
 
         try {
-            return restClient.get(url, defaultHandler200);
+            String jsonResponse = restClient.get(url, defaultHandler200);
+            return objectMapper.readValue(jsonResponse, objectMapper.getTypeFactory().constructCollectionType(List.class, RunOutput.class));
         } catch (ApiError | IOException e) {
             logger.error("Failed to get job runs: " + e.getLocalizedMessage());
             throw e;
         }
     }
 
-    public String submitJobRun(String jobId, SparkConfigOverride configOverride) throws ApiError, IOException {
+    public RunOutput submitJobRun(String jobId, SparkConfigOverride configOverride) throws ApiError, IOException {
         String payload = objectMapper.writeValueAsString(configOverride);
         String url = BASE_PATH + "/" + jobId + "/runs";
 
         try {
-            return restClient.post(url, payload, defaultHandler200);
+            String jsonResponse = restClient.post(url, payload, defaultHandler200);
+            return objectMapper.readValue(jsonResponse, RunOutput.class);
         } catch (ApiError | IOException e) {
             logger.error("Failed to submit job run: " + e.getLocalizedMessage());
             throw e;
         }
     }
 
-    public String cancelJobRun(String jobId, String runId) throws ApiError, IOException {
+    public RunOutput cancelJobRun(String jobId, String runId) throws ApiError, IOException {
         String url = BASE_PATH + "/" + jobId + "/runs/" + runId;
 
         try {
-            return restClient.delete(url, defaultHandler200);
+            String jsonResponse = restClient.delete(url, defaultHandler200);
+            return objectMapper.readValue(jsonResponse, RunOutput.class);
         } catch (ApiError | IOException e) {
             logger.error("Failed to cancel job run: " + e.getLocalizedMessage());
             throw e;
         }
     }
 
-    public String getJobRunById(String jobId, String runId) throws ApiError, IOException {
+    public RunOutput getJobRunById(String jobId, String runId) throws ApiError, IOException {
         String url = BASE_PATH + "/" + jobId + "/runs/" + runId;
 
         try {
-            return restClient.get(url, defaultHandler200);
+            String jsonResponse = restClient.get(url, defaultHandler200);
+            return objectMapper.readValue(jsonResponse, RunOutput.class);
         } catch (ApiError | IOException e) {
             logger.error("Failed to get job run by ID: " + e.getLocalizedMessage());
             throw e;
         }
     }
 
-    public String getJobRunLogs(String jobId, String runId) throws ApiError, IOException {
-        String url = BASE_PATH + "/" + jobId + "/runs/" + runId + "/logs";
-
-        try {
-            return restClient.get(url, defaultHandler200);
-        } catch (ApiError | IOException e) {
-            logger.error("Failed to get job run logs: " + e.getLocalizedMessage());
-            throw e;
-        }
-    }
-
-    public String getJobRunMetrics(String jobId, String runId) throws ApiError, IOException {
-        String url = BASE_PATH + "/" + jobId + "/runs/" + runId + "/metrics";
-
-        try {
-            return restClient.get(url, defaultHandler200);
-        } catch (ApiError | IOException e) {
-            logger.error("Failed to get job run metrics: " + e.getLocalizedMessage());
-            throw e;
-        }
-    }
+    // public String getJobRunLogs(String jobId, String runId) throws ApiError, IOException {
+    //     String url = BASE_PATH + "/" + jobId + "/runs/" + runId + "/logs";
+    //
+    //     try {
+    //         return restClient.get(url, defaultHandler200);
+    //     } catch (ApiError | IOException e) {
+    //         logger.error("Failed to get job run logs: " + e.getLocalizedMessage());
+    //         throw e;
+    //     }
+    // }
+    //
+    // public String getJobRunMetrics(String jobId, String runId) throws ApiError, IOException {
+    //     String url = BASE_PATH + "/" + jobId + "/runs/" + runId + "/metrics";
+    //
+    //     try {
+    //         return restClient.get(url, defaultHandler200);
+    //     } catch (ApiError | IOException e) {
+    //         logger.error("Failed to get job run metrics: " + e.getLocalizedMessage());
+    //         throw e;
+    //     }
+    // }
 
     protected ResponseHandler<String> defaultHandler200 = response -> {
         if (response.getStatusLine().getStatusCode() == 200) {

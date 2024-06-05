@@ -1,6 +1,6 @@
 package com.iomete.sdk.client;
 
-import com.iomete.sdk.models.ApiError;
+import com.iomete.sdk.error.ApiError;
 import org.apache.http.client.methods.*;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;

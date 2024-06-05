@@ -2,10 +2,10 @@ package com.iomete.sdk.models;
 
 import java.util.List;
 
-public class ListOutputModel {
-    private List<?> items;
+public class ListOutputModel<T> {
+    private List<T> items;
 
-    public ListOutputModel(List<?> items) {
+    public ListOutputModel(List<T> items) {
         this.items = items;
     }
 
@@ -13,7 +13,7 @@ public class ListOutputModel {
         return items;
     }
 
-    public void setItems(List<?> items) {
+    public void setItems(List<T> items) {
         this.items = items;
     }
 }
