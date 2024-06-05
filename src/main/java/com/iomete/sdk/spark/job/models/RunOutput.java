@@ -1,9 +1,11 @@
 package com.iomete.sdk.spark.job.models;
 
+import com.iomete.sdk.models.JsonModel;
+
 import java.time.LocalDateTime;
 import java.util.Map;
 
-public class RunOutput {
+public class RunOutput extends JsonModel<RunOutput> {
     private String id = "";
     private String createdBy = "";
     private LocalDateTime createdAt;

@@ -1,11 +1,12 @@
 package com.iomete.sdk.spark.job.models;
 
+import com.iomete.sdk.models.JsonModel;
 import com.iomete.sdk.models.ResourceTag;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class SparkJobResponse {
+public class SparkJobResponse extends JsonModel<SparkJobResponse> {
     private String id;
     private String createdBy;
     private LocalDateTime createdAt;

@@ -1,11 +1,13 @@
 package com.iomete.sdk.spark.job.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.iomete.sdk.models.JsonModel;
+
 import java.util.List;
 import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SparkConfigOverride {
+public class SparkConfigOverride extends JsonModel<SparkConfigOverride> {
     private List<String> arguments;
     private Map<String, String> envVars;
     private String javaOptions;

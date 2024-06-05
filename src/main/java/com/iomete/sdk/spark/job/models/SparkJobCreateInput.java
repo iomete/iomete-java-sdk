@@ -1,5 +1,6 @@
 package com.iomete.sdk.spark.job.models;
 
+import com.iomete.sdk.models.JsonModel;
 import com.iomete.sdk.models.ResourceTag;
 
 import java.util.List;
@@ -7,7 +8,7 @@ import java.util.List;
 /**
  * Model representing input for creating a Spark job.
  */
-public class SparkJobCreateInput {
+public class SparkJobCreateInput extends JsonModel<SparkJobCreateInput> {
     /**
      * Name of the Spark job.
      * - Cannot be blank.

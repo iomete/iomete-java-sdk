@@ -1,6 +1,7 @@
 package com.iomete.sdk.spark.job.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.List;
 import java.util.Map;
 
