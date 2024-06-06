@@ -2,6 +2,8 @@ package com.iomete.sdk.spark.job;
 
 import com.iomete.sdk.auth.AccessTokenAuthProvider;
 import com.iomete.sdk.client.SdkClientConfiguration;
+import com.iomete.sdk.error.ApiError;
+import com.iomete.sdk.models.DetailOutputModel;
 import com.iomete.sdk.spark.job.models.*;
 import org.junit.jupiter.api.Test;
 
@@ -20,33 +22,71 @@ public class SparkJobClientTest {
 
     private final SparkJobClient sparkJobClient = new SparkJobClient(config);
 
+    private static String jobName = "sdk-test-0001";
+
     @Test
     public void createJobTest() throws IOException {
-        String random = String.valueOf(System.currentTimeMillis());
-
         SparkJobCreateRequest input = new SparkJobCreateRequest();
-        input.setName("sdk-test-" + random);
+        input.setName(jobName);
         // input.setSchedule("0 0 1 1 *");
-        SparkConfig config = new SparkConfig();
+        ApplicationConfig config = new ApplicationConfig();
         config.setImage("iomete/spark:3.5.1");
         config.setMainClass("");
         config.setMainApplicationFile("spark-internal");
         config.setApplicationType(ApplicationType.JVM);
-        config.setArguments(Collections.emptyList());
-        config.setEnvVars(Collections.emptyMap());
-        // config.setJavaOptions("");
-        config.setSparkConf(Collections.emptyMap());
-        // config.setDeps(null);
-        config.setConfigMaps(Collections.emptyList());
-        config.setInstanceConfig(new InstanceConfig("driver-x-small", "exec-x-small"));
-        // config.setVolumeId(null);
 
-        input.setSparkConfig(config);
+        // config.setArguments(Collections.emptyList());
+        // config.setEnvVars(Collections.emptyMap());
+        // config.setSparkConf(Collections.emptyMap());
+        // config.setConfigMaps(Collections.emptyList());
+        config.setInstanceConfig(new InstanceConfig("driver-x-small", "exec-x-small"));
+        config.setVolumeId("...");
+
+        input.setApplicationConfig(config);
 
         SparkJobResponse response = sparkJobClient.createJob(input);
         System.out.println(response.toJson());
     }
 
+    // @Test
+    // public void createJobFromJson() throws IOException {
+    //     SparkJobCreateRequest request = new SparkJobCreateRequest().fromJson("{\n" +
+    //             "    \"name\": \"data-compaction\",\n" +
+    //             "    \"description\": \"Over time, iceberg tables can slow down and may need data compaction to tidy them up. IOMETE offers a built-in job to execute data " +
+    //             "compactions for each table.\",\n" +
+    //             "    \"jobType\": \"SCHEDULED\",\n" +
+    //             "    \"template\": {\n" +
+    //             "        \"isDocker\": true,\n" +
+    //             "        \"applicationType\": \"python\",\n" +
+    //             "        \"mainApplicationFile\": \"local:///app/driver.py\",\n" +
+    //             "        \"configMaps\": [\n" +
+    //             "            {\n" +
+    //             "                \"key\": \"application.conf\",\n" +
+    //             "                \"content\": \"{\\n    expire_snapshot: {\\n        retain_last: 1\\n    },\\n    rewrite_data_files: {\\n        options: {\\n            " +
+    //             "\\\"min-input-files\\\": 2,\\n            \\\"target-file-size-bytes\\\": 536870912,\\n        } \\n    },\\n    rewrite_manifests: {\\n        use_caching: " +
+    //             "true\\n    }\\n}\",\n" +
+    //             "                \"mountPath\": \"/etc/configs/application.conf\"\n" +
+    //             "            }\n" +
+    //             "        ],\n" +
+    //             "        \"deps\": {},\n" +
+    //             "        \"instanceConfig\": {\n" +
+    //             "            \"driverType\": \"driver-x-small\",\n" +
+    //             "            \"executorType\": \"exec-x-small\",\n" +
+    //             "            \"executorCount\": 1\n" +
+    //             "        },\n" +
+    //             "        \"imagePullSecrets\": [\n" +
+    //             "            \"default\"\n" +
+    //             "        ],\n" +
+    //             "        \"image\": \"iomete/iomete_data_compaction:1.0.0\",\n" +
+    //             "        \"volumeId\": \"ba8a321b-f78c-45b6-b805-bc64bc07b7e1\"\n" +
+    //             "    },\n" +
+    //             "    \"schedule\": \"0 12 * * 0\",\n" +
+    //             "    \"concurrency\": \"FORBID\"\n" +
+    //             "}"
+    //     );
+    // }
+
+    // @Test
     // public SparkJobResponse updateJob(String jobId, SparkJobUpdateInput input) throws ApiError, IOException {
     //     String jsonRequest = objectMapper.writeValueAsString(input);
     //     String url = BASE_PATH + "/" + jobId;
@@ -70,17 +110,14 @@ public class SparkJobClientTest {
     //     }
     // }
     //
-    // public DetailOutputModel<SparkJobResponse> getJobById(String jobId) throws ApiError, IOException {
-    //     String url = BASE_PATH + "/" + jobId;
-    //
-    //     try {
-    //         String jsonResponse = restClient.get(url, defaultHandler200);
-    //         return objectMapper.readValue(jsonResponse, new TypeReference<>() {});
-    //     } catch (ApiError | IOException e) {
-    //         logger.error("Failed to get job by ID: " + e.getLocalizedMessage());
-    //         throw e;
-    //     }
-    // }
+
+    @Test
+    public void getJobById() throws IOException {
+        String jobId = "2ee1ee68-039b-4269-9aac-34b4f4d0cbf4";
+        DetailOutputModel<SparkJobResponse> response = sparkJobClient.getJobById(jobId);
+        System.out.println(response.getItem().toJson());
+    }
+
     //
     // public SparkJobResponse deleteJobById(String jobId) throws ApiError, IOException {
     //     String url = BASE_PATH + "/" + jobId;

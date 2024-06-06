@@ -12,7 +12,7 @@ public class SparkRunResponse extends JsonModel<SparkRunResponse> {
     private String name;
     private String jobId;
     private String jobName;
-    private SparkConfig config;
+    private ApplicationConfig config;
     private StatusResponse status;
     private String sparkUI = "";
     private String sparkHistoryUrl = "";
@@ -73,11 +73,11 @@ public class SparkRunResponse extends JsonModel<SparkRunResponse> {
         this.jobName = jobName;
     }
 
-    public SparkConfig getConfig() {
+    public ApplicationConfig getConfig() {
         return config;
     }
 
-    public void setConfig(SparkConfig config) {
+    public void setConfig(ApplicationConfig config) {
         this.config = config;
     }
 

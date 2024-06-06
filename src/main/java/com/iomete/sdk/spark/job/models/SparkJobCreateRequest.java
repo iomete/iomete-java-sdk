@@ -16,10 +16,15 @@ public class SparkJobCreateRequest extends JsonModel<SparkJobCreateRequest> {
      */
     private String name;
     private String description;
+    /**
+     * Cron expression for scheduling the job.
+     */
     private String schedule;
     private ConcurrencyState concurrency = ConcurrencyState.FORBID;
+
     @JsonProperty("template")
-    private SparkConfig sparkConfig = new SparkConfig();
+    private ApplicationConfig applicationConfig = new ApplicationConfig();
+
     private List<ResourceTag> resourceTags;
 
     // Default constructor
@@ -59,12 +64,12 @@ public class SparkJobCreateRequest extends JsonModel<SparkJobCreateRequest> {
         this.concurrency = concurrency;
     }
 
-    public SparkConfig getSparkConfig() {
-        return sparkConfig;
+    public ApplicationConfig getApplicationConfig() {
+        return applicationConfig;
     }
 
-    public void setSparkConfig(SparkConfig sparkConfig) {
-        this.sparkConfig = sparkConfig;
+    public void setApplicationConfig(ApplicationConfig applicationConfig) {
+        this.applicationConfig = applicationConfig;
     }
 
     public List<ResourceTag> getResourceTags() {

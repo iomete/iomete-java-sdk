@@ -138,28 +138,6 @@ public class SparkJobClient implements SdkClient {
         }
     }
 
-    // public String getJobRunLogs(String jobId, String runId) throws ApiError, IOException {
-    //     String url = BASE_PATH + "/" + jobId + "/runs/" + runId + "/logs";
-    //
-    //     try {
-    //         return restClient.get(url, defaultHandler200);
-    //     } catch (ApiError | IOException e) {
-    //         logger.error("Failed to get job run logs: " + e.getLocalizedMessage());
-    //         throw e;
-    //     }
-    // }
-    //
-    // public String getJobRunMetrics(String jobId, String runId) throws ApiError, IOException {
-    //     String url = BASE_PATH + "/" + jobId + "/runs/" + runId + "/metrics";
-    //
-    //     try {
-    //         return restClient.get(url, defaultHandler200);
-    //     } catch (ApiError | IOException e) {
-    //         logger.error("Failed to get job run metrics: " + e.getLocalizedMessage());
-    //         throw e;
-    //     }
-    // }
-
     protected ResponseHandler<String> defaultHandler200 = response -> {
         if (response.getStatusLine().getStatusCode() == 200) {
             try (InputStream content = response.getEntity().getContent()) {

@@ -7,9 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SparkConfig {
+public class ApplicationConfig {
     @JsonProperty
     private boolean isDocker = false;
+
     private String image;
     private List<String> imagePullSecrets;
     private String mainClass;

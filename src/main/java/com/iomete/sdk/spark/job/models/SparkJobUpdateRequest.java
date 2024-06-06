@@ -13,7 +13,7 @@ public class SparkJobUpdateRequest extends JsonModel<SparkJobUpdateRequest> {
     private String schedule;
     private ConcurrencyState concurrency = ConcurrencyState.FORBID;
     @JsonProperty("template")
-    private SparkConfig sparkConfig = new SparkConfig();
+    private ApplicationConfig applicationConfig = new ApplicationConfig();
     private List<ResourceTag> resourceTags;
 
     // Default constructor
@@ -45,12 +45,12 @@ public class SparkJobUpdateRequest extends JsonModel<SparkJobUpdateRequest> {
         this.concurrency = concurrency;
     }
 
-    public SparkConfig getSparkConfig() {
-        return sparkConfig;
+    public ApplicationConfig getSparkConfig() {
+        return applicationConfig;
     }
 
-    public void setSparkConfig(SparkConfig sparkConfig) {
-        this.sparkConfig = sparkConfig;
+    public void setSparkConfig(ApplicationConfig applicationConfig) {
+        this.applicationConfig = applicationConfig;
     }
 
     public List<ResourceTag> getResourceTags() {
