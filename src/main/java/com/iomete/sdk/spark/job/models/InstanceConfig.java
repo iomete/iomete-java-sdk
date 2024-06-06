@@ -27,24 +27,12 @@ public class InstanceConfig {
         return driverType;
     }
 
-    public void setDriverType(String driverType) {
-        this.driverType = driverType;
-    }
-
     public String getExecutorType() {
         return executorType;
     }
 
-    public void setExecutorType(String executorType) {
-        this.executorType = executorType;
-    }
-
     public int getExecutorCount() {
         return executorCount;
-    }
-
-    public void setExecutorCount(int executorCount) {
-        this.executorCount = executorCount;
     }
 
     public static Builder builder() {
@@ -75,6 +63,5 @@ public class InstanceConfig {
         public InstanceConfig build() {
             return new InstanceConfig(driverType, executorType, executorCount);
         }
-
     }
 }

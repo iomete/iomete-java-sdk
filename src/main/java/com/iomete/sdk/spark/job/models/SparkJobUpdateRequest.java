@@ -17,47 +17,63 @@ public class SparkJobUpdateRequest extends JsonModel<SparkJobUpdateRequest> {
     private List<ResourceTag> resourceTags;
 
     // Default constructor
-    public SparkJobUpdateRequest() {
-    }
+    public SparkJobUpdateRequest() {}
 
     // Getters and Setters
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getSchedule() {
         return schedule;
-    }
-
-    public void setSchedule(String schedule) {
-        this.schedule = schedule;
     }
 
     public ConcurrencyState getConcurrency() {
         return concurrency;
     }
 
-    public void setConcurrency(ConcurrencyState concurrency) {
-        this.concurrency = concurrency;
-    }
-
     public ApplicationConfig getSparkConfig() {
         return applicationConfig;
-    }
-
-    public void setSparkConfig(ApplicationConfig applicationConfig) {
-        this.applicationConfig = applicationConfig;
     }
 
     public List<ResourceTag> getResourceTags() {
         return resourceTags;
     }
 
-    public void setResourceTags(List<ResourceTag> resourceTags) {
-        this.resourceTags = resourceTags;
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private final SparkJobUpdateRequest sparkJobUpdateRequest = new SparkJobUpdateRequest();
+
+        public Builder description(String description) {
+            sparkJobUpdateRequest.description = description;
+            return this;
+        }
+
+        public Builder schedule(String schedule) {
+            sparkJobUpdateRequest.schedule = schedule;
+            return this;
+        }
+
+        public Builder concurrency(ConcurrencyState concurrency) {
+            sparkJobUpdateRequest.concurrency = concurrency;
+            return this;
+        }
+
+        public Builder applicationConfig(ApplicationConfig applicationConfig) {
+            sparkJobUpdateRequest.applicationConfig = applicationConfig;
+            return this;
+        }
+
+        public Builder resourceTags(List<ResourceTag> resourceTags) {
+            sparkJobUpdateRequest.resourceTags = resourceTags;
+            return this;
+        }
+
+        public SparkJobUpdateRequest build() {
+            return sparkJobUpdateRequest;
+        }
     }
 }

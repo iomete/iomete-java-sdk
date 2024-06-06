@@ -26,23 +26,11 @@ public class StatusResponse {
         return applicationState;
     }
 
-    public void setApplicationState(ApplicationState applicationState) {
-        this.applicationState = applicationState;
-    }
-
     public Map<String, Integer> getExecutorState() {
         return executorState;
     }
 
-    public void setExecutorState(Map<String, Integer> executorState) {
-        this.executorState = executorState;
-    }
-
     public String getTerminationTime() {
         return terminationTime;
-    }
-
-    public void setTerminationTime(String terminationTime) {
-        this.terminationTime = terminationTime;
     }
 }
