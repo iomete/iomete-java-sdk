@@ -50,43 +50,43 @@ public class SparkJobClientTest {
         System.out.println(response.toJson());
     }
 
-    // @Test
-    // public void createJobFromJson() throws IOException {
-    //     SparkJobCreateRequest request = new SparkJobCreateRequest().fromJson("{\n" +
-    //             "    \"name\": \"data-compaction\",\n" +
-    //             "    \"description\": \"Over time, iceberg tables can slow down and may need data compaction to tidy them up. IOMETE offers a built-in job to execute data " +
-    //             "compactions for each table.\",\n" +
-    //             "    \"jobType\": \"SCHEDULED\",\n" +
-    //             "    \"template\": {\n" +
-    //             "        \"isDocker\": true,\n" +
-    //             "        \"applicationType\": \"python\",\n" +
-    //             "        \"mainApplicationFile\": \"local:///app/driver.py\",\n" +
-    //             "        \"configMaps\": [\n" +
-    //             "            {\n" +
-    //             "                \"key\": \"application.conf\",\n" +
-    //             "                \"content\": \"{\\n    expire_snapshot: {\\n        retain_last: 1\\n    },\\n    rewrite_data_files: {\\n        options: {\\n            " +
-    //             "\\\"min-input-files\\\": 2,\\n            \\\"target-file-size-bytes\\\": 536870912,\\n        } \\n    },\\n    rewrite_manifests: {\\n        use_caching: " +
-    //             "true\\n    }\\n}\",\n" +
-    //             "                \"mountPath\": \"/etc/configs/application.conf\"\n" +
-    //             "            }\n" +
-    //             "        ],\n" +
-    //             "        \"deps\": {},\n" +
-    //             "        \"instanceConfig\": {\n" +
-    //             "            \"driverType\": \"driver-x-small\",\n" +
-    //             "            \"executorType\": \"exec-x-small\",\n" +
-    //             "            \"executorCount\": 1\n" +
-    //             "        },\n" +
-    //             "        \"imagePullSecrets\": [\n" +
-    //             "            \"default\"\n" +
-    //             "        ],\n" +
-    //             "        \"image\": \"iomete/iomete_data_compaction:1.0.0\",\n" +
-    //             "        \"volumeId\": \"ba8a321b-f78c-45b6-b805-bc64bc07b7e1\"\n" +
-    //             "    },\n" +
-    //             "    \"schedule\": \"0 12 * * 0\",\n" +
-    //             "    \"concurrency\": \"FORBID\"\n" +
-    //             "}"
-    //     );
-    // }
+    @Test
+    public void createJobFromJson() throws IOException {
+        SparkJobCreateRequest request = new SparkJobCreateRequest().fromJson("""
+                {
+                    "name": "data-compaction",
+                    "description": "Over time, iceberg tables can slow down and may need data compaction to tidy them up. IOMETE offers a built-in job to execute data compactions for each table.",
+                    "jobType": "SCHEDULED",
+                    "template": {
+                        "isDocker": true,
+                        "applicationType": "python",
+                        "mainApplicationFile": "local:///app/driver.py",
+                        "configMaps": [
+                            {
+                                "key": "application.conf",
+                                "content": "{\\n    expire_snapshot: {\\n        retain_last: 1\\n    },\\n    rewrite_data_files: {\\n        options: {\\n            \\"min-input-files\\": 2,\\n            \\"target-file-size-bytes\\": 536870912,\\n        } \\n    },\\n    rewrite_manifests: {\\n        use_caching: true\\n    }\\n}",
+                                "mountPath": "/etc/configs/application.conf"
+                            }
+                        ],
+                        "deps": {},
+                        "instanceConfig": {
+                            "driverType": "driver-x-small",
+                            "executorType": "exec-x-small",
+                            "executorCount": 1
+                        },
+                        "imagePullSecrets": [
+                            "default"
+                        ],
+                        "image": "iomete/iomete_data_compaction:1.0.0",
+                        "volumeId": "ba8a321b-f78c-45b6-b805-bc64bc07b7e1"
+                    },
+                    "schedule": "0 12 * * 0",
+                    "concurrency": "FORBID"
+                }"""
+        );
+
+        System.out.println(request.toJson());
+    }
 
     // @Test
     // public SparkJobResponse updateJob(String jobId, SparkJobUpdateInput input) throws ApiError, IOException {
