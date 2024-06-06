@@ -79,4 +79,46 @@ public class SparkJobCreateRequest extends JsonModel<SparkJobCreateRequest> {
     public void setResourceTags(List<ResourceTag> resourceTags) {
         this.resourceTags = resourceTags;
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private final SparkJobCreateRequest sparkJobCreateRequest = new SparkJobCreateRequest();
+
+        public Builder name(String name) {
+            sparkJobCreateRequest.setName(name);
+            return this;
+        }
+
+        public Builder description(String description) {
+            sparkJobCreateRequest.setDescription(description);
+            return this;
+        }
+
+        public Builder schedule(String schedule) {
+            sparkJobCreateRequest.setSchedule(schedule);
+            return this;
+        }
+
+        public Builder concurrency(ConcurrencyState concurrency) {
+            sparkJobCreateRequest.setConcurrency(concurrency);
+            return this;
+        }
+
+        public Builder applicationConfig(ApplicationConfig applicationConfig) {
+            sparkJobCreateRequest.setApplicationConfig(applicationConfig);
+            return this;
+        }
+
+        public Builder resourceTags(List<ResourceTag> resourceTags) {
+            sparkJobCreateRequest.setResourceTags(resourceTags);
+            return this;
+        }
+
+        public SparkJobCreateRequest build() {
+            return sparkJobCreateRequest;
+        }
+    }
 }

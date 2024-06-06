@@ -142,5 +142,82 @@ public class ApplicationConfig {
     public void setVolumeId(String volumeId) {
         this.volumeId = volumeId;
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private final ApplicationConfig applicationConfig = new ApplicationConfig();
+
+        public Builder image(String image) {
+            applicationConfig.setImage(image);
+            return this;
+        }
+
+        public Builder imagePullSecrets(List<String> imagePullSecrets) {
+            applicationConfig.setImagePullSecrets(imagePullSecrets);
+            return this;
+        }
+
+        public Builder mainClass(String mainClass) {
+            applicationConfig.setMainClass(mainClass);
+            return this;
+        }
+
+        public Builder mainApplicationFile(String mainApplicationFile) {
+            applicationConfig.setMainApplicationFile(mainApplicationFile);
+            return this;
+        }
+
+        public Builder applicationType(ApplicationType applicationType) {
+            applicationConfig.setApplicationType(applicationType);
+            return this;
+        }
+
+        public Builder arguments(List<String> arguments) {
+            applicationConfig.setArguments(arguments);
+            return this;
+        }
+
+        public Builder envVars(Map<String, String> envVars) {
+            applicationConfig.setEnvVars(envVars);
+            return this;
+        }
+
+        public Builder javaOptions(String javaOptions) {
+            applicationConfig.setJavaOptions(javaOptions);
+            return this;
+        }
+
+        public Builder sparkConf(Map<String, String> sparkConf) {
+            applicationConfig.setSparkConf(sparkConf);
+            return this;
+        }
+
+        public Builder deps(Dependencies deps) {
+            applicationConfig.setDeps(deps);
+            return this;
+        }
+
+        public Builder configMaps(List<ConfigMap> configMaps) {
+            applicationConfig.setConfigMaps(configMaps);
+            return this;
+        }
+
+        public Builder instanceConfig(InstanceConfig instanceConfig) {
+            applicationConfig.setInstanceConfig(instanceConfig);
+            return this;
+        }
+
+        public Builder volumeId(String volumeId) {
+            applicationConfig.setVolumeId(volumeId);
+            return this;
+        }
+
+        public ApplicationConfig build() {
+            return applicationConfig;
+        }
+    }
 }
 

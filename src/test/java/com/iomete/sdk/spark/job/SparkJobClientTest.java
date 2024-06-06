@@ -2,7 +2,6 @@ package com.iomete.sdk.spark.job;
 
 import com.iomete.sdk.auth.AccessTokenAuthProvider;
 import com.iomete.sdk.client.SdkClientConfiguration;
-import com.iomete.sdk.error.ApiError;
 import com.iomete.sdk.models.DetailOutputModel;
 import com.iomete.sdk.spark.job.models.*;
 import org.junit.jupiter.api.Test;
@@ -14,37 +13,40 @@ import java.util.Collections;
 public class SparkJobClientTest {
     private final String accessToken = "gqK_vZm9lPUDkRiJ5vSBNzB3FqbGTwY8SouLieZ9eZE";
 
-    SdkClientConfiguration config = new SdkClientConfiguration
-            .Builder()
+    SdkClientConfiguration sdkClientConfiguration = new SdkClientConfiguration.Builder()
             .endpoint("https://dev.iomete.cloud")
             .authProvider(new AccessTokenAuthProvider(accessToken))
             .build();
 
-    private final SparkJobClient sparkJobClient = new SparkJobClient(config);
+    private final SparkJobClient sparkJobClient = new SparkJobClient(sdkClientConfiguration);
 
     private static String jobName = "sdk-test-0001";
 
     @Test
     public void createJobTest() throws IOException {
-        SparkJobCreateRequest input = new SparkJobCreateRequest();
-        input.setName(jobName);
-        // input.setSchedule("0 0 1 1 *");
-        ApplicationConfig config = new ApplicationConfig();
-        config.setImage("iomete/spark:3.5.1");
-        config.setMainClass("");
-        config.setMainApplicationFile("spark-internal");
-        config.setApplicationType(ApplicationType.JVM);
 
-        // config.setArguments(Collections.emptyList());
-        // config.setEnvVars(Collections.emptyMap());
-        // config.setSparkConf(Collections.emptyMap());
-        // config.setConfigMaps(Collections.emptyList());
-        config.setInstanceConfig(new InstanceConfig("driver-x-small", "exec-x-small"));
-        config.setVolumeId("...");
+        var sparkJobCreateRequest = SparkJobCreateRequest.builder()
+                .name(jobName)
+                .description("This is a test job")
+                .schedule("0 0 1 1 *")
+                .concurrency(ConcurrencyState.FORBID)
+                .applicationConfig(ApplicationConfig.builder()
+                        .image("iomete/spark:3.5.1")
+                        .mainClass("")
+                        .mainApplicationFile("spark-internal")
+                        .applicationType(ApplicationType.JVM)
+                        .instanceConfig(InstanceConfig.builder()
+                                .driverType("driver-x-small")
+                                .executorType("exec-x-small")
+                                .build()
+                        )
+                        .volumeId("...")
+                        .build()
+                )
+                .resourceTags(Collections.emptyList())
+                .build();
 
-        input.setApplicationConfig(config);
-
-        SparkJobResponse response = sparkJobClient.createJob(input);
+        SparkJobResponse response = sparkJobClient.createJob(sparkJobCreateRequest);
         System.out.println(response.toJson());
     }
 

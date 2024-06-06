@@ -46,4 +46,35 @@ public class InstanceConfig {
     public void setExecutorCount(int executorCount) {
         this.executorCount = executorCount;
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+
+        private String driverType;
+        private String executorType;
+        private int executorCount = 1;
+
+        public Builder driverType(String driverType) {
+            this.driverType = driverType;
+            return this;
+        }
+
+        public Builder executorType(String executorType) {
+            this.executorType = executorType;
+            return this;
+        }
+
+        public Builder executorCount(int executorCount) {
+            this.executorCount = executorCount;
+            return this;
+        }
+
+        public InstanceConfig build() {
+            return new InstanceConfig(driverType, executorType, executorCount);
+        }
+
+    }
 }
