@@ -7,15 +7,15 @@ import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
-public class StatusOutput {
+public class StatusResponse {
     private ApplicationState applicationState = new ApplicationState();
     private Map<String, Integer> executorState = Map.of();
     private String terminationTime;
 
-    public StatusOutput() {
+    public StatusResponse() {
     }
 
-    public StatusOutput(ApplicationState applicationState, Map<String, Integer> executorState, String terminationTime) {
+    public StatusResponse(ApplicationState applicationState, Map<String, Integer> executorState, String terminationTime) {
         this.applicationState = applicationState;
         this.executorState = executorState;
         this.terminationTime = terminationTime;

@@ -30,7 +30,7 @@ public class SparkJobClient implements SdkClient {
         logger.info("IOMETE SparkJobClient initialized with base URL: " + config.getEndpoint());
     }
 
-    public SparkJobResponse createJob(SparkJobCreateInput input) throws ApiError, IOException {
+    public SparkJobResponse createJob(SparkJobCreateRequest input) throws ApiError, IOException {
         String jsonRequest = objectMapper.writeValueAsString(input);
 
         try {
@@ -42,7 +42,7 @@ public class SparkJobClient implements SdkClient {
         }
     }
 
-    public SparkJobResponse updateJob(String jobId, SparkJobUpdateInput input) throws ApiError, IOException {
+    public SparkJobResponse updateJob(String jobId, SparkJobUpdateRequest input) throws ApiError, IOException {
         String jsonRequest = objectMapper.writeValueAsString(input);
         String url = BASE_PATH + "/" + jobId;
 
@@ -89,49 +89,49 @@ public class SparkJobClient implements SdkClient {
         }
     }
 
-    public List<RunOutput> getJobRuns(String jobId) throws ApiError, IOException {
+    public List<SparkRunResponse> getJobRuns(String jobId) throws ApiError, IOException {
         String url = BASE_PATH + "/" + jobId + "/runs";
 
         try {
             String jsonResponse = restClient.get(url, defaultHandler200);
-            return objectMapper.readValue(jsonResponse, objectMapper.getTypeFactory().constructCollectionType(List.class, RunOutput.class));
+            return objectMapper.readValue(jsonResponse, objectMapper.getTypeFactory().constructCollectionType(List.class, SparkRunResponse.class));
         } catch (ApiError | IOException e) {
             logger.error("Failed to get job runs: " + e.getLocalizedMessage());
             throw e;
         }
     }
 
-    public RunOutput submitJobRun(String jobId, SparkConfigOverride configOverride) throws ApiError, IOException {
+    public SparkRunResponse submitJobRun(String jobId, SparkConfigOverride configOverride) throws ApiError, IOException {
         String payload = objectMapper.writeValueAsString(configOverride);
         String url = BASE_PATH + "/" + jobId + "/runs";
 
         try {
             String jsonResponse = restClient.post(url, payload, defaultHandler200);
-            return objectMapper.readValue(jsonResponse, RunOutput.class);
+            return objectMapper.readValue(jsonResponse, SparkRunResponse.class);
         } catch (ApiError | IOException e) {
             logger.error("Failed to submit job run: " + e.getLocalizedMessage());
             throw e;
         }
     }
 
-    public RunOutput cancelJobRun(String jobId, String runId) throws ApiError, IOException {
+    public SparkRunResponse cancelJobRun(String jobId, String runId) throws ApiError, IOException {
         String url = BASE_PATH + "/" + jobId + "/runs/" + runId;
 
         try {
             String jsonResponse = restClient.delete(url, defaultHandler200);
-            return objectMapper.readValue(jsonResponse, RunOutput.class);
+            return objectMapper.readValue(jsonResponse, SparkRunResponse.class);
         } catch (ApiError | IOException e) {
             logger.error("Failed to cancel job run: " + e.getLocalizedMessage());
             throw e;
         }
     }
 
-    public RunOutput getJobRunById(String jobId, String runId) throws ApiError, IOException {
+    public SparkRunResponse getJobRunById(String jobId, String runId) throws ApiError, IOException {
         String url = BASE_PATH + "/" + jobId + "/runs/" + runId;
 
         try {
             String jsonResponse = restClient.get(url, defaultHandler200);
-            return objectMapper.readValue(jsonResponse, RunOutput.class);
+            return objectMapper.readValue(jsonResponse, SparkRunResponse.class);
         } catch (ApiError | IOException e) {
             logger.error("Failed to get job run by ID: " + e.getLocalizedMessage());
             throw e;

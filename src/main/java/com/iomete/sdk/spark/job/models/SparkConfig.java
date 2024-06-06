@@ -1,17 +1,22 @@
 package com.iomete.sdk.spark.job.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.List;
 import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SparkConfig {
-    private String sparkVersion;
-    private boolean isDocker = true;
+    @JsonProperty
+    private boolean isDocker = false;
     private String image;
     private List<String> imagePullSecrets;
     private String mainClass;
+    /**
+     * Only required if applicationType is python
+     * For JVM applications, the default `spark-internal` is used, which tells spark to look at the classpath.
+     */
     private String mainApplicationFile = "spark-internal";
     private String applicationType = "jvm"; // jvm, python
     private List<String> arguments;
@@ -21,23 +26,12 @@ public class SparkConfig {
     private Dependencies deps;
     private List<ConfigMap> configMaps;
     private InstanceConfig instanceConfig;
+    /**
+     * Executor's volume configuration.
+     * If not set, then hostPath volume will be used.
+     * To use PVC volume, create a predefined Volume in IOMETE Console (Settings / Volumes) and provide ID here.
+     */
     private String volumeId;
-
-    public String getSparkVersion() {
-        return sparkVersion;
-    }
-
-    public void setSparkVersion(String sparkVersion) {
-        this.sparkVersion = sparkVersion;
-    }
-
-    public boolean isDocker() {
-        return isDocker;
-    }
-
-    public void setIsDocker(boolean docker) {
-        isDocker = docker;
-    }
 
     public String getImage() {
         return image;
@@ -45,6 +39,7 @@ public class SparkConfig {
 
     public void setImage(String image) {
         this.image = image;
+        this.isDocker = true;
     }
 
     public List<String> getImagePullSecrets() {
@@ -75,8 +70,8 @@ public class SparkConfig {
         return applicationType;
     }
 
-    public void setApplicationType(String applicationType) {
-        this.applicationType = applicationType;
+    public void setApplicationType(ApplicationType applicationType) {
+        this.applicationType = applicationType.getValue();
     }
 
     public List<String> getArguments() {

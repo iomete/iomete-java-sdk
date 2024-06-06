@@ -12,7 +12,6 @@ public class SparkConfigOverride extends JsonModel<SparkConfigOverride> {
     private Map<String, String> envVars;
     private String javaOptions;
     private Map<String, String> sparkConf;
-    private String pythonScript;
 
     public List<String> getArguments() {
         return arguments;
@@ -44,14 +43,6 @@ public class SparkConfigOverride extends JsonModel<SparkConfigOverride> {
 
     public void setSparkConf(Map<String, String> sparkConf) {
         this.sparkConf = sparkConf;
-    }
-
-    public String getPythonScript() {
-        return pythonScript;
-    }
-
-    public void setPythonScript(String pythonScript) {
-        this.pythonScript = pythonScript;
     }
 }
 

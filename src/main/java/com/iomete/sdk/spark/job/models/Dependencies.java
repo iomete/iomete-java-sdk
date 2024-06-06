@@ -10,18 +10,16 @@ public class Dependencies {
     private List<String> files;
     private List<String> pyFiles;
     private List<String> packages;
-    private List<String> excludePackages;
     private List<String> repositories;
 
     public Dependencies() {
     }
 
-    public Dependencies(List<String> jars, List<String> files, List<String> pyFiles, List<String> packages, List<String> excludePackages, List<String> repositories) {
+    public Dependencies(List<String> jars, List<String> files, List<String> pyFiles, List<String> packages, List<String> repositories) {
         this.jars = jars;
         this.files = files;
         this.pyFiles = pyFiles;
         this.packages = packages;
-        this.excludePackages = excludePackages;
         this.repositories = repositories;
     }
 
@@ -56,14 +54,6 @@ public class Dependencies {
 
     public void setPackages(List<String> packages) {
         this.packages = packages;
-    }
-
-    public List<String> getExcludePackages() {
-        return excludePackages;
-    }
-
-    public void setExcludePackages(List<String> excludePackages) {
-        this.excludePackages = excludePackages;
     }
 
     public List<String> getRepositories() {

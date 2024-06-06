@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ConfigMap {
+    /**
+     * File name of the config map, e.g. "config.properties" or "config.json"
+     */
     private String key = "";
     private String content = "";
     private String mountPath = "/etc/configs";

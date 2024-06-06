@@ -1,19 +1,19 @@
 package com.iomete.sdk.spark.job.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.iomete.sdk.models.JsonModel;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 
-public class RunOutput extends JsonModel<RunOutput> {
-    private String id = "";
-    private String createdBy = "";
-    private LocalDateTime createdAt;
-    private String name = "";
-    private String jobId = "";
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class SparkRunResponse extends JsonModel<SparkRunResponse> {
+    private String id;
+    private String name;
+    private String jobId;
     private String jobName;
-    private Object config;
-    private StatusOutput status;
+    private SparkConfig config;
+    private StatusResponse status;
     private String sparkUI = "";
     private String sparkHistoryUrl = "";
     private SparkRunStatus driverStatus;
@@ -21,6 +21,9 @@ public class RunOutput extends JsonModel<RunOutput> {
     private Map<String, Integer> executorsState = Map.of();
     private int totalExecutors = 1;
     private String terminationTime;
+
+    private String createdBy = "";
+    private LocalDateTime createdAt;
 
     public String getId() {
         return id;
@@ -70,19 +73,19 @@ public class RunOutput extends JsonModel<RunOutput> {
         this.jobName = jobName;
     }
 
-    public Object getConfig() {
+    public SparkConfig getConfig() {
         return config;
     }
 
-    public void setConfig(Object config) {
+    public void setConfig(SparkConfig config) {
         this.config = config;
     }
 
-    public StatusOutput getStatus() {
+    public StatusResponse getStatus() {
         return status;
     }
 
-    public void setStatus(StatusOutput status) {
+    public void setStatus(StatusResponse status) {
         this.status = status;
     }
 

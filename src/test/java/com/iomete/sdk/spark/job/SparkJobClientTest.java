@@ -1,29 +1,15 @@
 package com.iomete.sdk.spark.job;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.iomete.sdk.auth.AccessTokenAuthProvider;
-import com.iomete.sdk.client.ResponseHandler;
-import com.iomete.sdk.client.RestClient;
-import com.iomete.sdk.client.SdkClient;
 import com.iomete.sdk.client.SdkClientConfiguration;
-import com.iomete.sdk.error.ApiError;
-import com.iomete.sdk.models.DetailOutputModel;
-import com.iomete.sdk.models.ListOutputModel;
 import com.iomete.sdk.spark.job.models.*;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.Collections;
-import java.util.List;
 
 
 public class SparkJobClientTest {
-    private static final String BASE_PATH = "/api/v1/spark-job";
     private final String accessToken = "gqK_vZm9lPUDkRiJ5vSBNzB3FqbGTwY8SouLieZ9eZE";
 
     SdkClientConfiguration config = new SdkClientConfiguration
@@ -32,24 +18,20 @@ public class SparkJobClientTest {
             .authProvider(new AccessTokenAuthProvider(accessToken))
             .build();
 
-    private SparkJobClient sparkJobClient = new SparkJobClient(config);
+    private final SparkJobClient sparkJobClient = new SparkJobClient(config);
 
     @Test
     public void createJobTest() throws IOException {
         String random = String.valueOf(System.currentTimeMillis());
 
-        SparkJobCreateInput input = new SparkJobCreateInput();
+        SparkJobCreateRequest input = new SparkJobCreateRequest();
         input.setName("sdk-test-" + random);
-        input.setSchedule("0 0 1 1 *"); // once a year
-
+        // input.setSchedule("0 0 1 1 *");
         SparkConfig config = new SparkConfig();
-        config.setSparkVersion("");
-        config.setIsDocker(true);
         config.setImage("iomete/spark:3.5.1");
-        // config.setImagePullSecrets();
         config.setMainClass("");
         config.setMainApplicationFile("spark-internal");
-        config.setApplicationType("jvm");
+        config.setApplicationType(ApplicationType.JVM);
         config.setArguments(Collections.emptyList());
         config.setEnvVars(Collections.emptyMap());
         // config.setJavaOptions("");
@@ -59,7 +41,7 @@ public class SparkJobClientTest {
         config.setInstanceConfig(new InstanceConfig("driver-x-small", "exec-x-small"));
         // config.setVolumeId(null);
 
-        input.setTemplate(config);
+        input.setSparkConfig(config);
 
         SparkJobResponse response = sparkJobClient.createJob(input);
         System.out.println(response.toJson());

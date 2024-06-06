@@ -1,39 +1,30 @@
 package com.iomete.sdk.spark.job.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iomete.sdk.models.JsonModel;
 import com.iomete.sdk.models.ResourceTag;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SparkJobResponse extends JsonModel<SparkJobResponse> {
     private String id;
-    private String createdBy;
-    private LocalDateTime createdAt;
     private String name;
     private String description;
-    private SparkJobType jobType;
     private String schedule;
     private ConcurrencyState concurrency;
-    private Object template;
-    private Object status;
-    private RunOutput lastRun;
+    @JsonProperty("template")
+    private SparkConfig sparkConfig;
+    private SparkRunStatus status;
+    private SparkRunResponse lastRun;
     private List<ResourceTag> resourceTags;
 
-    public SparkJobResponse() {
-        this.id = "";
-        this.createdBy = "";
-        this.createdAt = null;
-        this.name = "";
-        this.description = null;
-        this.jobType = SparkJobType.MANUAL;
-        this.schedule = null;
-        this.concurrency = null;
-        this.template = null;
-        this.status = null;
-        this.lastRun = null;
-        this.resourceTags = null;
-    }
+    private String createdBy;
+    private LocalDateTime createdAt;
+
+    public SparkJobResponse() {}
 
     // Getters and Setters
     public String getId() {
@@ -76,14 +67,6 @@ public class SparkJobResponse extends JsonModel<SparkJobResponse> {
         this.description = description;
     }
 
-    public SparkJobType getJobType() {
-        return jobType;
-    }
-
-    public void setJobType(SparkJobType jobType) {
-        this.jobType = jobType;
-    }
-
     public String getSchedule() {
         return schedule;
     }
@@ -100,27 +83,27 @@ public class SparkJobResponse extends JsonModel<SparkJobResponse> {
         this.concurrency = concurrency;
     }
 
-    public Object getTemplate() {
-        return template;
+    public SparkConfig getSparkConfig() {
+        return sparkConfig;
     }
 
-    public void setTemplate(Object template) {
-        this.template = template;
+    public void setSparkConfig(SparkConfig sparkConfig) {
+        this.sparkConfig = sparkConfig;
     }
 
-    public Object getStatus() {
+    public SparkRunStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Object status) {
+    public void setStatus(SparkRunStatus status) {
         this.status = status;
     }
 
-    public RunOutput getLastRun() {
+    public SparkRunResponse getLastRun() {
         return lastRun;
     }
 
-    public void setLastRun(RunOutput lastRun) {
+    public void setLastRun(SparkRunResponse lastRun) {
         this.lastRun = lastRun;
     }
 

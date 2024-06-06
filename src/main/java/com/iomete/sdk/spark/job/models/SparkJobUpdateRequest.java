@@ -1,41 +1,23 @@
 package com.iomete.sdk.spark.job.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iomete.sdk.models.JsonModel;
 import com.iomete.sdk.models.ResourceTag;
 
 import java.util.List;
 
-/**
- * Model representing input for updating a Spark job.
- */
-public class SparkJobUpdateInput extends JsonModel<SparkJobUpdateInput> {
-    /**
-     * Description of the Spark job.
-     */
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class SparkJobUpdateRequest extends JsonModel<SparkJobUpdateRequest> {
     private String description;
-
-    /**
-     * Schedule of the Spark job.
-     */
     private String schedule;
-
-    /**
-     * Concurrency state of the Spark job.
-     */
-    private ConcurrencyState concurrency;
-
-    /**
-     * Template configuration for the Spark job.
-     */
-    private SparkConfig template = new SparkConfig();
-
-    /**
-     * List of resource tags associated with the Spark job.
-     */
+    private ConcurrencyState concurrency = ConcurrencyState.FORBID;
+    @JsonProperty("template")
+    private SparkConfig sparkConfig = new SparkConfig();
     private List<ResourceTag> resourceTags;
 
     // Default constructor
-    public SparkJobUpdateInput() {
+    public SparkJobUpdateRequest() {
     }
 
     // Getters and Setters
@@ -63,12 +45,12 @@ public class SparkJobUpdateInput extends JsonModel<SparkJobUpdateInput> {
         this.concurrency = concurrency;
     }
 
-    public SparkConfig getTemplate() {
-        return template;
+    public SparkConfig getSparkConfig() {
+        return sparkConfig;
     }
 
-    public void setTemplate(SparkConfig template) {
-        this.template = template;
+    public void setSparkConfig(SparkConfig sparkConfig) {
+        this.sparkConfig = sparkConfig;
     }
 
     public List<ResourceTag> getResourceTags() {
@@ -79,4 +61,3 @@ public class SparkJobUpdateInput extends JsonModel<SparkJobUpdateInput> {
         this.resourceTags = resourceTags;
     }
 }
-

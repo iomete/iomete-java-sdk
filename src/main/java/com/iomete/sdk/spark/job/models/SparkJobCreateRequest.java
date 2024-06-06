@@ -1,49 +1,29 @@
 package com.iomete.sdk.spark.job.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iomete.sdk.models.JsonModel;
 import com.iomete.sdk.models.ResourceTag;
 
 import java.util.List;
 
-/**
- * Model representing input for creating a Spark job.
- */
-public class SparkJobCreateInput extends JsonModel<SparkJobCreateInput> {
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class SparkJobCreateRequest extends JsonModel<SparkJobCreateRequest> {
     /**
      * Name of the Spark job.
-     * - Cannot be blank.
      * - Must be between 3 and 64 characters.
-     * - Must match the specified pattern.
+     * - Should be unique.
      */
-    private String name = "";
-
-    /**
-     * Description of the Spark job.
-     */
+    private String name;
     private String description;
-
-    /**
-     * Schedule of the Spark job.
-     */
     private String schedule;
-
-    /**
-     * Concurrency state of the Spark job.
-     */
-    private ConcurrencyState concurrency = ConcurrencyState.ALLOW;
-
-    /**
-     * Template configuration for the Spark job.
-     */
-    private SparkConfig template = new SparkConfig();
-
-    /**
-     * List of resource tags associated with the Spark job.
-     */
+    private ConcurrencyState concurrency = ConcurrencyState.FORBID;
+    @JsonProperty("template")
+    private SparkConfig sparkConfig = new SparkConfig();
     private List<ResourceTag> resourceTags;
 
     // Default constructor
-    public SparkJobCreateInput() {
+    public SparkJobCreateRequest() {
     }
 
     // Getters and Setters
@@ -79,12 +59,12 @@ public class SparkJobCreateInput extends JsonModel<SparkJobCreateInput> {
         this.concurrency = concurrency;
     }
 
-    public SparkConfig getTemplate() {
-        return template;
+    public SparkConfig getSparkConfig() {
+        return sparkConfig;
     }
 
-    public void setTemplate(SparkConfig template) {
-        this.template = template;
+    public void setSparkConfig(SparkConfig sparkConfig) {
+        this.sparkConfig = sparkConfig;
     }
 
     public List<ResourceTag> getResourceTags() {

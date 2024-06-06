@@ -2,6 +2,10 @@ package com.iomete.sdk.spark.job.models;
 
 
 public class InstanceConfig {
+    /**
+     * Name of the Driver Node.
+     * Nodes are defined in IOMETE Console (Settings / Node Types).
+     */
     private String driverType;
     private String executorType;
     private int executorCount = 1;
