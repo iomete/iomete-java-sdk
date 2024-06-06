@@ -13,7 +13,6 @@ public class SparkRunResponse extends JsonModel<SparkRunResponse> {
     private String jobId;
     private String jobName;
     private ApplicationConfig config;
-    private StatusResponse status;
     private String sparkUI = "";
     private String sparkHistoryUrl = "";
     private SparkRunStatus driverStatus;
@@ -79,14 +78,6 @@ public class SparkRunResponse extends JsonModel<SparkRunResponse> {
 
     public void setConfig(ApplicationConfig config) {
         this.config = config;
-    }
-
-    public StatusResponse getStatus() {
-        return status;
-    }
-
-    public void setStatus(StatusResponse status) {
-        this.status = status;
     }
 
     public String getSparkUI() {

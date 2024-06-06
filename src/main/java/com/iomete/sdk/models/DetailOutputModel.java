@@ -14,6 +14,8 @@ public class DetailOutputModel<T> {
      */
     private ResourcePermissionsModel permissions;
 
+    public DetailOutputModel() {}
+
     public DetailOutputModel(T item, ResourcePermissionsModel permissions) {
         this.item = item;
         this.permissions = permissions;

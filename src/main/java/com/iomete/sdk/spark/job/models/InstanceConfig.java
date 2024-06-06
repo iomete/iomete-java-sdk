@@ -10,6 +10,8 @@ public class InstanceConfig {
     private String executorType;
     private int executorCount = 1;
 
+    public InstanceConfig() {}
+
     public InstanceConfig(String driverType, String executorType) {
         this.driverType = driverType;
         this.executorType = executorType;

@@ -75,6 +75,10 @@ public class ApplicationConfig {
         this.applicationType = applicationType.getValue();
     }
 
+    public void setApplicationType(String applicationType) {
+        this.applicationType = applicationType;
+    }
+
     public List<String> getArguments() {
         return arguments;
     }
