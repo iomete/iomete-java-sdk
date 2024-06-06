@@ -141,11 +141,13 @@ public class SparkJobClientTest {
 
     @Test
     public void submitJobRun() throws IOException {
-        sparkJobClient.submitJobRun(catalogSyncJobId, SparkConfigOverride
+        SparkRunResponse response = sparkJobClient.submitJobRun(catalogSyncJobId, SparkConfigOverride
                 .builder()
                 .envVars(Map.of("ENV_FROM_SDK", "SDK_VALUE"))
                 .build()
         );
+
+        System.out.println(response.toJson());
     }
 
     // public RunOutput cancelJobRun(String jobId, String runId) throws ApiError, IOException {
@@ -162,7 +164,10 @@ public class SparkJobClientTest {
 
     @Test
     public void getJobRunById() throws IOException {
-        SparkRunResponse response = sparkJobClient.getJobRunById(catalogSyncJobId, "a5f53849-c190-4800-9513-6dd2951a4bdf");
+        // submit run then get details
+        SparkRunResponse submittedRun = sparkJobClient.submitJobRun(catalogSyncJobId);
+
+        SparkRunResponse response = sparkJobClient.getJobRunById(catalogSyncJobId, submittedRun.getId());
         System.out.println(response.toJson());
     }
 

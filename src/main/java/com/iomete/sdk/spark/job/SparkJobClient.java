@@ -105,6 +105,10 @@ public class SparkJobClient implements SdkClient {
         }
     }
 
+    public SparkRunResponse submitJobRun(String jobId) throws ApiError, IOException {
+        return submitJobRun(jobId, SparkConfigOverride.builder().build());
+    }
+
     public SparkRunResponse submitJobRun(String jobId, SparkConfigOverride configOverride) throws ApiError, IOException {
         String payload = objectMapper.writeValueAsString(configOverride);
         String url = BASE_PATH + "/" + jobId + "/runs";
