@@ -2,12 +2,13 @@ package com.iomete.sdk.spark.job;
 
 import com.iomete.sdk.auth.AccessTokenAuthProvider;
 import com.iomete.sdk.client.SdkClientConfiguration;
-import com.iomete.sdk.models.DetailOutputModel;
 import com.iomete.sdk.spark.job.models.*;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 
 public class SparkJobClientTest {
@@ -20,22 +21,31 @@ public class SparkJobClientTest {
 
     private final SparkJobClient sparkJobClient = new SparkJobClient(sdkClientConfiguration);
 
-    private static String jobName = "sdk-test-0001";
+    private final static String jobName = "sdk-test-0001";
+
+    // This could be deleted
+    private final static String dataCompactionJobId = "798963b6-7158-4769-bb53-b8063a1310e2";
+
+    // Do not delete this
+    private final static String catalogSyncJobId = "2ee1ee68-039b-4269-9aac-34b4f4d0cbf4";
 
     @Test
     public void createJobTest() throws IOException {
 
-        var sparkJobCreateRequest = SparkJobCreateRequest.builder()
+        var sparkJobCreateRequest = SparkJobCreateRequest
+                .builder()
                 .name(jobName)
                 .description("This is a test job")
                 .schedule("0 0 1 1 *")
                 .concurrency(ConcurrencyState.FORBID)
-                .applicationConfig(ApplicationConfig.builder()
+                .applicationConfig(ApplicationConfig
+                        .builder()
                         .image("iomete/spark:3.5.1")
                         .mainClass("")
                         .mainApplicationFile("spark-internal")
                         .applicationType(ApplicationType.JVM)
-                        .instanceConfig(InstanceConfig.builder()
+                        .instanceConfig(InstanceConfig
+                                .builder()
                                 .driverType("driver-x-small")
                                 .executorType("exec-x-small")
                                 .build()
@@ -52,7 +62,7 @@ public class SparkJobClientTest {
 
     @Test
     public void createJobFromJson() throws IOException {
-        SparkJobCreateRequest request = new SparkJobCreateRequest().fromJson("""
+        SparkJobCreateRequest sparkJobCreateRequest = new SparkJobCreateRequest().fromJson("""
                 {
                     "name": "data-compaction",
                     "description": "Over time, iceberg tables can slow down and may need data compaction to tidy them up. IOMETE offers a built-in job to execute data compactions for each table.",
@@ -85,7 +95,8 @@ public class SparkJobClientTest {
                 }"""
         );
 
-        System.out.println(request.toJson());
+        SparkJobResponse response = sparkJobClient.createJob(sparkJobCreateRequest);
+        System.out.println(response.toJson());
     }
 
     // @Test
@@ -102,62 +113,41 @@ public class SparkJobClientTest {
     //     }
     // }
     //
-    // public ListOutputModel<SparkJobResponse> getJobs() throws ApiError, IOException {
-    //     try {
-    //         String jsonResponse = restClient.get(BASE_PATH, defaultHandler200);
-    //         return objectMapper.readValue(jsonResponse, new TypeReference<>() {});
-    //     } catch (ApiError | IOException e) {
-    //         logger.error("Failed to get jobs: " + e.getLocalizedMessage());
-    //         throw e;
-    //     }
-    // }
-    //
+
+    @Test
+    public void getJobs() throws IOException {
+        List<SparkJobResponse> response = sparkJobClient.getJobs();
+        System.out.println(response);
+    }
+
 
     @Test
     public void getJobById() throws IOException {
-        String jobId = "2ee1ee68-039b-4269-9aac-34b4f4d0cbf4";
-        DetailOutputModel<SparkJobResponse> response = sparkJobClient.getJobById(jobId);
-        System.out.println(response.getItem().toJson());
+        SparkJobResponse response = sparkJobClient.getJobById(dataCompactionJobId);
+        System.out.println(response.toJson());
     }
 
-    //
-    // public SparkJobResponse deleteJobById(String jobId) throws ApiError, IOException {
-    //     String url = BASE_PATH + "/" + jobId;
-    //
-    //     try {
-    //         String jsonResponse = restClient.delete(url, defaultHandler200);
-    //         return objectMapper.readValue(jsonResponse, SparkJobResponse.class);
-    //     } catch (ApiError | IOException e) {
-    //         logger.error("Failed to delete job by ID: " + e.getLocalizedMessage());
-    //         throw e;
-    //     }
-    // }
-    //
-    // public List<RunOutput> getJobRuns(String jobId) throws ApiError, IOException {
-    //     String url = BASE_PATH + "/" + jobId + "/runs";
-    //
-    //     try {
-    //         String jsonResponse = restClient.get(url, defaultHandler200);
-    //         return objectMapper.readValue(jsonResponse, objectMapper.getTypeFactory().constructCollectionType(List.class, RunOutput.class));
-    //     } catch (ApiError | IOException e) {
-    //         logger.error("Failed to get job runs: " + e.getLocalizedMessage());
-    //         throw e;
-    //     }
-    // }
-    //
-    // public RunOutput submitJobRun(String jobId, SparkConfigOverride configOverride) throws ApiError, IOException {
-    //     String payload = objectMapper.writeValueAsString(configOverride);
-    //     String url = BASE_PATH + "/" + jobId + "/runs";
-    //
-    //     try {
-    //         String jsonResponse = restClient.post(url, payload, defaultHandler200);
-    //         return objectMapper.readValue(jsonResponse, RunOutput.class);
-    //     } catch (ApiError | IOException e) {
-    //         logger.error("Failed to submit job run: " + e.getLocalizedMessage());
-    //         throw e;
-    //     }
-    // }
-    //
+    @Test
+    public void deleteJobById() throws IOException {
+        var job = sparkJobClient.deleteJobById(dataCompactionJobId);
+        System.out.println(job.toJson());
+    }
+
+    @Test
+    public void getJobRuns() throws IOException {
+        var runs = sparkJobClient.getJobRuns(catalogSyncJobId);
+        runs.forEach(run -> System.out.println(run.toJson()));
+    }
+
+    @Test
+    public void submitJobRun() throws IOException {
+        sparkJobClient.submitJobRun(catalogSyncJobId, SparkConfigOverride
+                .builder()
+                .envVars(Map.of("ENV_FROM_SDK", "SDK_VALUE"))
+                .build()
+        );
+    }
+
     // public RunOutput cancelJobRun(String jobId, String runId) throws ApiError, IOException {
     //     String url = BASE_PATH + "/" + jobId + "/runs/" + runId;
     //
@@ -169,38 +159,11 @@ public class SparkJobClientTest {
     //         throw e;
     //     }
     // }
-    //
-    // public RunOutput getJobRunById(String jobId, String runId) throws ApiError, IOException {
-    //     String url = BASE_PATH + "/" + jobId + "/runs/" + runId;
-    //
-    //     try {
-    //         String jsonResponse = restClient.get(url, defaultHandler200);
-    //         return objectMapper.readValue(jsonResponse, RunOutput.class);
-    //     } catch (ApiError | IOException e) {
-    //         logger.error("Failed to get job run by ID: " + e.getLocalizedMessage());
-    //         throw e;
-    //     }
-    // }
 
-    // public String getJobRunLogs(String jobId, String runId) throws ApiError, IOException {
-    //     String url = BASE_PATH + "/" + jobId + "/runs/" + runId + "/logs";
-    //
-    //     try {
-    //         return restClient.get(url, defaultHandler200);
-    //     } catch (ApiError | IOException e) {
-    //         logger.error("Failed to get job run logs: " + e.getLocalizedMessage());
-    //         throw e;
-    //     }
-    // }
-    //
-    // public String getJobRunMetrics(String jobId, String runId) throws ApiError, IOException {
-    //     String url = BASE_PATH + "/" + jobId + "/runs/" + runId + "/metrics";
-    //
-    //     try {
-    //         return restClient.get(url, defaultHandler200);
-    //     } catch (ApiError | IOException e) {
-    //         logger.error("Failed to get job run metrics: " + e.getLocalizedMessage());
-    //         throw e;
-    //     }
-    // }
+    @Test
+    public void getJobRunById() throws IOException {
+        SparkRunResponse response = sparkJobClient.getJobRunById(catalogSyncJobId, "a5f53849-c190-4800-9513-6dd2951a4bdf");
+        System.out.println(response.toJson());
+    }
+
 }

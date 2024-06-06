@@ -4,6 +4,9 @@ public class ResourceTag {
     private String key;
     private String value;
 
+    public ResourceTag() {
+    }
+
     public ResourceTag(String key, String value) {
         this.key = key;
         this.value = value;

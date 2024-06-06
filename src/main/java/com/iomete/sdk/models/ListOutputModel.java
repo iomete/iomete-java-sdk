@@ -5,11 +5,14 @@ import java.util.List;
 public class ListOutputModel<T> {
     private List<T> items;
 
+    public ListOutputModel() {
+    }
+
     public ListOutputModel(List<T> items) {
         this.items = items;
     }
 
-    public List<?> getItems() {
+    public List<T> getItems() {
         return items;
     }
 

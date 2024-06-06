@@ -55,22 +55,26 @@ public class SparkJobClient implements SdkClient {
         }
     }
 
-    public ListOutputModel<SparkJobResponse> getJobs() throws ApiError, IOException {
+    public List<SparkJobResponse> getJobs() throws ApiError, IOException {
         try {
             String jsonResponse = restClient.get(BASE_PATH, defaultHandler200);
-            return objectMapper.readValue(jsonResponse, new TypeReference<>() {});
+            var listOutputModel = objectMapper.readValue(jsonResponse, new TypeReference<ListOutputModel<SparkJobResponse>>() {});
+
+            return listOutputModel.getItems();
         } catch (ApiError | IOException e) {
             logger.error("Failed to get jobs: " + e.getLocalizedMessage());
             throw e;
         }
     }
 
-    public DetailOutputModel<SparkJobResponse> getJobById(String jobId) throws ApiError, IOException {
+    public SparkJobResponse getJobById(String jobId) throws ApiError, IOException {
         String url = BASE_PATH + "/" + jobId;
 
         try {
             String jsonResponse = restClient.get(url, defaultHandler200);
-            return objectMapper.readValue(jsonResponse, new TypeReference<>() {});
+            var detailOutput = objectMapper.readValue(jsonResponse, new TypeReference<DetailOutputModel<SparkJobResponse>>() {});
+
+            return detailOutput.getItem();
         } catch (ApiError | IOException e) {
             logger.error("Failed to get job by ID: " + e.getLocalizedMessage());
             throw e;

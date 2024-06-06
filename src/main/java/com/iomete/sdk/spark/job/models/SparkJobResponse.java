@@ -17,7 +17,7 @@ public class SparkJobResponse extends JsonModel<SparkJobResponse> {
     private ConcurrencyState concurrency;
     @JsonProperty("template")
     private ApplicationConfig applicationConfig;
-    private SparkRunStatus status;
+    private SparkJobStatus status;
     private SparkRunResponse lastRun;
     private List<ResourceTag> resourceTags;
 
@@ -91,11 +91,11 @@ public class SparkJobResponse extends JsonModel<SparkJobResponse> {
         this.applicationConfig = applicationConfig;
     }
 
-    public SparkRunStatus getStatus() {
+    public SparkJobStatus getStatus() {
         return status;
     }
 
-    public void setStatus(SparkRunStatus status) {
+    public void setStatus(SparkJobStatus status) {
         this.status = status;
     }
 

@@ -44,5 +44,48 @@ public class SparkConfigOverride extends JsonModel<SparkConfigOverride> {
     public void setSparkConf(Map<String, String> sparkConf) {
         this.sparkConf = sparkConf;
     }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public static class Builder {
+        private List<String> arguments;
+        private Map<String, String> envVars;
+        private String javaOptions;
+        private Map<String, String> sparkConf;
+
+        public Builder() {
+        }
+
+        public Builder arguments(List<String> arguments) {
+            this.arguments = arguments;
+            return this;
+        }
+
+        public Builder envVars(Map<String, String> envVars) {
+            this.envVars = envVars;
+            return this;
+        }
+
+        public Builder javaOptions(String javaOptions) {
+            this.javaOptions = javaOptions;
+            return this;
+        }
+
+        public Builder sparkConf(Map<String, String> sparkConf) {
+            this.sparkConf = sparkConf;
+            return this;
+        }
+
+        public SparkConfigOverride build() {
+            SparkConfigOverride sparkConfigOverride = new SparkConfigOverride();
+            sparkConfigOverride.setArguments(arguments);
+            sparkConfigOverride.setEnvVars(envVars);
+            sparkConfigOverride.setJavaOptions(javaOptions);
+            sparkConfigOverride.setSparkConf(sparkConf);
+            return sparkConfigOverride;
+        }
+    }
 }
 
