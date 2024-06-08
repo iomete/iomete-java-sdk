@@ -14,62 +14,85 @@ import java.util.List;
 public class SparkJobResponse extends JsonModel<SparkJobResponse> {
     private String id;
     private String name;
+
     private String description;
-    private String schedule;
-    private ConcurrencyState concurrency;
-    @JsonProperty("template")
-    private ApplicationConfig applicationConfig;
-    private SparkJobStatus status;
-    private SparkRunResponse lastRun;
     private List<ResourceTag> resourceTags;
+
+    private SparkJobScheduleResponse schedule;
+
+    private ApplicationTemplate template;
 
     private String createdBy;
     private LocalDateTime createdAt;
 
     public SparkJobResponse() {}
 
-    // Getters and Setters
     public String getId() {
         return id;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getDescription() {
         return description;
     }
 
-    public String getSchedule() {
-        return schedule;
-    }
-
-    public ConcurrencyState getConcurrency() {
-        return concurrency;
-    }
-
-    public ApplicationConfig getSparkConfig() {
-        return applicationConfig;
-    }
-
-    public SparkJobStatus getStatus() {
-        return status;
-    }
-
-    public SparkRunResponse getLastRun() {
-        return lastRun;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public List<ResourceTag> getResourceTags() {
         return resourceTags;
+    }
+
+    public void setResourceTags(List<ResourceTag> resourceTags) {
+        this.resourceTags = resourceTags;
+    }
+
+    public SparkJobScheduleResponse getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(SparkJobScheduleResponse schedule) {
+        this.schedule = schedule;
+    }
+
+    public ApplicationTemplate getTemplate() {
+        return template;
+    }
+
+    public void setTemplate(ApplicationTemplate template) {
+        this.template = template;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @Override
+    public String toString() {
+        return this.toJson(true);
     }
 }

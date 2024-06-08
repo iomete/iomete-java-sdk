@@ -12,8 +12,7 @@ public class SparkJobUpdateRequest extends JsonModel<SparkJobUpdateRequest> {
     private String description;
     private String schedule;
     private ConcurrencyState concurrency = ConcurrencyState.FORBID;
-    @JsonProperty("template")
-    private ApplicationConfig applicationConfig = new ApplicationConfig();
+    private ApplicationTemplate template = new ApplicationTemplate();
     private List<ResourceTag> resourceTags;
 
     // Default constructor
@@ -32,8 +31,8 @@ public class SparkJobUpdateRequest extends JsonModel<SparkJobUpdateRequest> {
         return concurrency;
     }
 
-    public ApplicationConfig getSparkConfig() {
-        return applicationConfig;
+    public ApplicationTemplate getTemplate() {
+        return template;
     }
 
     public List<ResourceTag> getResourceTags() {
@@ -62,8 +61,8 @@ public class SparkJobUpdateRequest extends JsonModel<SparkJobUpdateRequest> {
             return this;
         }
 
-        public Builder applicationConfig(ApplicationConfig applicationConfig) {
-            sparkJobUpdateRequest.applicationConfig = applicationConfig;
+        public Builder template(ApplicationTemplate template) {
+            sparkJobUpdateRequest.template = template;
             return this;
         }
 
@@ -75,5 +74,10 @@ public class SparkJobUpdateRequest extends JsonModel<SparkJobUpdateRequest> {
         public SparkJobUpdateRequest build() {
             return sparkJobUpdateRequest;
         }
+    }
+
+    @Override
+    public String toString() {
+        return this.toJson(true);
     }
 }

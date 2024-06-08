@@ -14,7 +14,7 @@ public class SparkRunResponse extends JsonModel<SparkRunResponse> {
     private String name;
     private String jobId;
     private String jobName;
-    private ApplicationConfig config;
+    private ApplicationTemplate config;
     private String sparkUI = "";
     private String sparkHistoryUrl = "";
     private SparkRunStatus driverStatus;
@@ -50,7 +50,7 @@ public class SparkRunResponse extends JsonModel<SparkRunResponse> {
         return jobName;
     }
 
-    public ApplicationConfig getConfig() {
+    public ApplicationTemplate getConfig() {
         return config;
     }
 
@@ -82,4 +82,64 @@ public class SparkRunResponse extends JsonModel<SparkRunResponse> {
         return terminationTime;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
+    }
+
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
+    }
+
+    public void setConfig(ApplicationTemplate config) {
+        this.config = config;
+    }
+
+    public void setSparkUI(String sparkUI) {
+        this.sparkUI = sparkUI;
+    }
+
+    public void setSparkHistoryUrl(String sparkHistoryUrl) {
+        this.sparkHistoryUrl = sparkHistoryUrl;
+    }
+
+    public void setDriverStatus(SparkRunStatus driverStatus) {
+        this.driverStatus = driverStatus;
+    }
+
+    public void setDriverErrorMessage(String driverErrorMessage) {
+        this.driverErrorMessage = driverErrorMessage;
+    }
+
+    public void setExecutorsState(Map<String, Integer> executorsState) {
+        this.executorsState = executorsState;
+    }
+
+    public void setTotalExecutors(int totalExecutors) {
+        this.totalExecutors = totalExecutors;
+    }
+
+    public void setTerminationTime(String terminationTime) {
+        this.terminationTime = terminationTime;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    @Override
+    public String toString() {
+        return this.toJson(true);
+    }
 }

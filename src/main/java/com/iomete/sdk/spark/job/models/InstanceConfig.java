@@ -1,7 +1,9 @@
 package com.iomete.sdk.spark.job.models;
 
 
-public class InstanceConfig {
+import com.iomete.sdk.models.JsonModel;
+
+public class InstanceConfig extends JsonModel<InstanceConfig> {
     /**
      * Name of the Driver Node.
      * Nodes are defined in IOMETE Console (Settings / Node Types).
@@ -63,5 +65,10 @@ public class InstanceConfig {
         public InstanceConfig build() {
             return new InstanceConfig(driverType, executorType, executorCount);
         }
+    }
+
+    @Override
+    public String toString() {
+        return this.toJson(true);
     }
 }

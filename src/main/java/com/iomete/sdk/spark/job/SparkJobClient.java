@@ -5,8 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.iomete.sdk.client.*;
 import com.iomete.sdk.error.ApiError;
-import com.iomete.sdk.models.DetailOutputModel;
-import com.iomete.sdk.models.ListOutputModel;
 import com.iomete.sdk.spark.job.models.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +16,7 @@ import java.util.List;
 
 
 public class SparkJobClient implements SdkClient {
-    private static final String BASE_PATH = "/api/v1/spark-jobs";
+    private static final String BASE_PATH = "/api/v2/spark-jobs";
 
     private static final Logger logger = LogManager.getLogger(SparkJobClient.class);
 
@@ -58,9 +56,8 @@ public class SparkJobClient implements SdkClient {
     public List<SparkJobResponse> getJobs() throws ApiError, IOException {
         try {
             String jsonResponse = restClient.get(BASE_PATH, defaultHandler200);
-            var listOutputModel = objectMapper.readValue(jsonResponse, new TypeReference<ListOutputModel<SparkJobResponse>>() {});
 
-            return listOutputModel.getItems();
+            return objectMapper.readValue(jsonResponse, new TypeReference<>() {});
         } catch (ApiError | IOException e) {
             logger.error("Failed to get jobs: " + e.getLocalizedMessage());
             throw e;
@@ -72,9 +69,8 @@ public class SparkJobClient implements SdkClient {
 
         try {
             String jsonResponse = restClient.get(url, defaultHandler200);
-            var detailOutput = objectMapper.readValue(jsonResponse, new TypeReference<DetailOutputModel<SparkJobResponse>>() {});
 
-            return detailOutput.getItem();
+            return objectMapper.readValue(jsonResponse, SparkJobResponse.class);
         } catch (ApiError | IOException e) {
             logger.error("Failed to get job by ID: " + e.getLocalizedMessage());
             throw e;
@@ -98,7 +94,7 @@ public class SparkJobClient implements SdkClient {
 
         try {
             String jsonResponse = restClient.get(url, defaultHandler200);
-            return objectMapper.readValue(jsonResponse, objectMapper.getTypeFactory().constructCollectionType(List.class, SparkRunResponse.class));
+            return objectMapper.readValue(jsonResponse, new TypeReference<>() {});
         } catch (ApiError | IOException e) {
             logger.error("Failed to get job runs: " + e.getLocalizedMessage());
             throw e;

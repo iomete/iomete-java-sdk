@@ -3,13 +3,15 @@ package com.iomete.sdk.spark.job.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.iomete.sdk.models.JsonModel;
+import org.apache.logging.log4j.core.config.json.JsonConfigurationFactory;
 
 import java.util.List;
 import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApplicationConfig {
+public class ApplicationTemplate extends JsonModel<ApplicationTemplate> {
     @JsonProperty
     private boolean isDocker = false;
 
@@ -36,7 +38,7 @@ public class ApplicationConfig {
      */
     private String volumeId;
 
-    public ApplicationConfig() {}
+    public ApplicationTemplate() {}
 
     public String getImage() {
         return image;
@@ -95,7 +97,7 @@ public class ApplicationConfig {
     }
 
     public static class Builder {
-        private final ApplicationConfig applicationConfig = new ApplicationConfig();
+        private final ApplicationTemplate applicationConfig = new ApplicationTemplate();
 
         public Builder image(String image) {
             applicationConfig.image = image;
@@ -163,9 +165,14 @@ public class ApplicationConfig {
             return this;
         }
 
-        public ApplicationConfig build() {
+        public ApplicationTemplate build() {
             return applicationConfig;
         }
+    }
+
+    @Override
+    public String toString() {
+        return this.toJson(true);
     }
 }
 

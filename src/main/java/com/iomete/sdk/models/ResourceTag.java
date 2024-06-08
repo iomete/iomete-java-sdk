@@ -28,4 +28,12 @@ public class ResourceTag {
     public void setValue(String value) {
         this.value = value;
     }
+
+    @Override
+    public String toString() {
+        return "ResourceTag{" +
+                "key='" + key + '\'' +
+                ", value='" + value + '\'' +
+                '}';
+    }
 }

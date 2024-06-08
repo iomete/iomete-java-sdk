@@ -64,5 +64,10 @@ public class SparkConfigOverride extends JsonModel<SparkConfigOverride> {
             return sparkConfigOverride;
         }
     }
+
+    @Override
+    public String toString() {
+        return this.toJson(true);
+    }
 }
 

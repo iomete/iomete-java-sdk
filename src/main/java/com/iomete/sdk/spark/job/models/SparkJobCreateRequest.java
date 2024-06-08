@@ -1,7 +1,6 @@
 package com.iomete.sdk.spark.job.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iomete.sdk.models.JsonModel;
 import com.iomete.sdk.models.ResourceTag;
@@ -22,8 +21,7 @@ public class SparkJobCreateRequest extends JsonModel<SparkJobCreateRequest> {
      */
     private String schedule;
     private ConcurrencyState concurrency = ConcurrencyState.FORBID;
-    @JsonProperty("template")
-    private ApplicationConfig applicationConfig = new ApplicationConfig();
+    private ApplicationTemplate template = new ApplicationTemplate();
     private List<ResourceTag> resourceTags;
 
     // Default constructor
@@ -46,8 +44,8 @@ public class SparkJobCreateRequest extends JsonModel<SparkJobCreateRequest> {
         return concurrency;
     }
 
-    public ApplicationConfig getApplicationConfig() {
-        return applicationConfig;
+    public ApplicationTemplate getTemplate() {
+        return template;
     }
 
     public List<ResourceTag> getResourceTags() {
@@ -81,8 +79,8 @@ public class SparkJobCreateRequest extends JsonModel<SparkJobCreateRequest> {
             return this;
         }
 
-        public Builder applicationConfig(ApplicationConfig applicationConfig) {
-            sparkJobCreateRequest.applicationConfig = applicationConfig;
+        public Builder template(ApplicationTemplate template) {
+            sparkJobCreateRequest.template = template;
             return this;
         }
 
@@ -94,5 +92,10 @@ public class SparkJobCreateRequest extends JsonModel<SparkJobCreateRequest> {
         public SparkJobCreateRequest build() {
             return sparkJobCreateRequest;
         }
+    }
+
+    @Override
+    public String toString() {
+        return this.toJson(true);
     }
 }

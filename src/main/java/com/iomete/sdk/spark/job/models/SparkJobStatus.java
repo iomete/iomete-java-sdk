@@ -2,10 +2,11 @@ package com.iomete.sdk.spark.job.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.iomete.sdk.models.JsonModel;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SparkJobStatus {
+public class SparkJobStatus extends JsonModel<SparkJobStatus> {
     private String lastRun;
     private String lastRunName;
     private String nextRun;
@@ -27,5 +28,10 @@ public class SparkJobStatus {
 
     public String getScheduleState() {
         return scheduleState;
+    }
+
+    @Override
+    public String toString() {
+        return this.toJson(true);
     }
 }
