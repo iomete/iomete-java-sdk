@@ -18,8 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class SparkJobClientTest {
-    private final String dataPlaneEndpoint = "https://dev.iomete.cloud";
-    private final String accessToken = "gqK_vZm9lPUDkRiJ5vSBNzB3FqbGTwY8SouLieZ9eZE";
+    private final String dataPlaneEndpoint = "http(s)://example.com";
+    private final String accessToken = "api_token";
 
     private final SparkJobClient sparkJobClient = new SparkJobClient(
             new SdkClientConfiguration
@@ -151,7 +151,7 @@ public class SparkJobClientTest {
                 isCompleted = true;
                 break;
             } else if (status == SparkRunStatus.FAILED || status == SparkRunStatus.ABORTED) {
-                throw new ApiError(500, "Job run failed or aborted.");
+                throw new RuntimeException("Job run failed or aborted.");
             }
 
             try {
@@ -164,7 +164,7 @@ public class SparkJobClientTest {
 
         if (!isCompleted) {
             sparkJobClient.cancelJobRun(temporarySampleJob.getId(), runResponse.getId());
-            throw new ApiError(500, "Job run did not complete within the threshold time.");
+            throw new RuntimeException("Job run did not complete within the threshold time.");
         }
 
         // Clean up, if completed, otherwise leave it for debugging
@@ -214,7 +214,7 @@ public class SparkJobClientTest {
                 isCompleted = true;
                 break;
             } else if (status == SparkRunStatus.FAILED || status == SparkRunStatus.ABORTED) {
-                throw new ApiError(500, "Job run failed or aborted.");
+                throw new RuntimeException("Job run failed or aborted.");
             }
 
             try {
@@ -227,7 +227,7 @@ public class SparkJobClientTest {
 
         if (!isCompleted) {
             sparkJobClient.cancelJobRun(temporarySampleJob.getId(), runResponse.getId());
-            throw new ApiError(500, "Job run did not complete within the threshold time.");
+            throw new RuntimeException("Job run did not complete within the threshold time.");
         }
 
         // Clean up, if completed, otherwise leave it for debugging
