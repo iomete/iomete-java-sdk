@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "com.iomete"
-version = "1.0"
+version = "1.0.0"
 
 repositories {
     mavenCentral()
@@ -49,7 +49,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "com.iomete"
             artifactId = "iomete-java-sdk"
-            version = "1.0"
+            version = "1.0.0"
 
             from(components["java"])
         }
