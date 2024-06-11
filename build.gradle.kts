@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("maven-publish")
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 group = "com.iomete"
@@ -32,6 +33,8 @@ dependencies {
     testImplementation("org.assertj:assertj-core:3.21.0")
 }
 
+tasks.jar {}
+
 tasks.test {
     useJUnitPlatform()
 
@@ -41,7 +44,6 @@ tasks.test {
 tasks.withType<Jar> {
     exclude("log4j2.properties") // for src/main/resources/application-*.yml, this is already from root directory.
 }
-
 
 publishing {
 
