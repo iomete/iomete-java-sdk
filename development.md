@@ -6,3 +6,9 @@
 # Build skip tests
 ./gradlew clean build -x test
 ```
+
+## Uber Jar
+
+```shell
+./gradlew clean build shadowJar
+```
