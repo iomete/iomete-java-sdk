@@ -10,5 +10,5 @@
 ## Uber Jar
 
 ```shell
-./gradlew clean build shadowJar
+./gradlew clean build shadowJar -x test
 ```
