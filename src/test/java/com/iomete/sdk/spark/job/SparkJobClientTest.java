@@ -3,6 +3,7 @@ package com.iomete.sdk.spark.job;
 import com.iomete.sdk.auth.AccessTokenAuthProvider;
 import com.iomete.sdk.client.SdkClientConfiguration;
 import com.iomete.sdk.error.ApiError;
+import com.iomete.sdk.models.ResourceTag;
 import com.iomete.sdk.spark.job.models.*;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -67,23 +68,23 @@ public class SparkJobClientTest {
                 .builder()
                 .name(jobName)
                 .template(new ApplicationTemplate().fromJson("""
-                        {
-                          "isDocker": true,
-                          "image": "iomete/iom-catalog-sync:1.10.0",
-                          "imagePullSecrets": [],
-                          "mainClass": "com.iomete.catalogsync.App",
-                          "mainApplicationFile": "spark-internal",
-                          "applicationType": "jvm",
-                          "envVars": {},
-                          "deps": {},
-                          "instanceConfig": {
-                            "driverType": "driver-x-small",
-                            "executorType": "exec-x-small",
-                            "executorCount": 1
-                          },
-                          "volumeId": "59cdccbd-975b-41c8-b232-18e73fad577f"
-                        }
-                    """)
+                            {
+                              "isDocker": true,
+                              "image": "iomete/iom-catalog-sync:1.10.0",
+                              "imagePullSecrets": [],
+                              "mainClass": "com.iomete.catalogsync.App",
+                              "mainApplicationFile": "spark-internal",
+                              "applicationType": "jvm",
+                              "envVars": {},
+                              "deps": {},
+                              "instanceConfig": {
+                                "driverType": "driver-x-small",
+                                "executorType": "exec-x-small",
+                                "executorCount": 1
+                              },
+                              "volumeId": "59cdccbd-975b-41c8-b232-18e73fad577f"
+                            }
+                        """)
                 )
                 .build();
 
@@ -185,6 +186,10 @@ public class SparkJobClientTest {
                         .envVars(Map.of(
                                 "SDK_ENV_VAR_1", "value1",
                                 "SDK_ENV_VAR_2", "value2"
+                        ))
+                        .resourceTags(List.of(
+                                new ResourceTag("source", "sdk"),
+                                new ResourceTag("env", "dev")
                         ))
                         // Add more overrides as needed
                         .build()

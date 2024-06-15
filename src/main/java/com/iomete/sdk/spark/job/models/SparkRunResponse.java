@@ -3,8 +3,10 @@ package com.iomete.sdk.spark.job.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.iomete.sdk.models.JsonModel;
+import com.iomete.sdk.models.ResourceTag;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -17,6 +19,9 @@ public class SparkRunResponse extends JsonModel<SparkRunResponse> {
     private ApplicationTemplate config;
     private String sparkUI = "";
     private String sparkHistoryUrl = "";
+
+    private List<ResourceTag> resourceTags;
+
     private SparkRunStatus driverStatus;
     private String driverErrorMessage;
     private Map<String, Integer> executorsState = Map.of();
@@ -136,6 +141,14 @@ public class SparkRunResponse extends JsonModel<SparkRunResponse> {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public List<ResourceTag> getResourceTags() {
+        return resourceTags;
+    }
+
+    public void setResourceTags(List<ResourceTag> resourceTags) {
+        this.resourceTags = resourceTags;
     }
 
     @Override

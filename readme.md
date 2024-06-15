@@ -79,6 +79,10 @@ SparkRunResponse runResponse = sparkJobClient.submitJobRun(
                         "SDK_ENV_VAR_1", "value1",
                         "SDK_ENV_VAR_2", "value2"
                 ))
+                .resourceTags(List.of(
+                        new ResourceTag("source", "sdk"),
+                        new ResourceTag("env", "dev")
+                ))
                 // Add more overrides as needed
                 .build()
 );

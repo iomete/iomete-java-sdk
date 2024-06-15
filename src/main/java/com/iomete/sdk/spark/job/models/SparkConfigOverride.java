@@ -3,6 +3,7 @@ package com.iomete.sdk.spark.job.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.iomete.sdk.models.JsonModel;
+import com.iomete.sdk.models.ResourceTag;
 
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ public class SparkConfigOverride extends JsonModel<SparkConfigOverride> {
     private Map<String, String> envVars;
     private String javaOptions;
     private Map<String, String> sparkConf;
+    private List<ResourceTag> resourceTags;
 
     public SparkConfigOverride() {}
 
@@ -31,6 +33,10 @@ public class SparkConfigOverride extends JsonModel<SparkConfigOverride> {
 
     public Map<String, String> getSparkConf() {
         return sparkConf;
+    }
+
+    public List<ResourceTag> getResourceTags() {
+        return resourceTags;
     }
 
     public static Builder builder() {
@@ -57,6 +63,11 @@ public class SparkConfigOverride extends JsonModel<SparkConfigOverride> {
 
         public Builder sparkConf(Map<String, String> sparkConf) {
             sparkConfigOverride.sparkConf = sparkConf;
+            return this;
+        }
+
+        public Builder resourceTags(List<ResourceTag> resourceTags) {
+            sparkConfigOverride.resourceTags = resourceTags;
             return this;
         }
 
