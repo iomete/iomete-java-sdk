@@ -1,9 +1,22 @@
 package com.iomete.sdk.spark.job.models;
 
 public enum SparkRunStatus {
-    STARTING,
+    ENQUEUED,
+    SUBMITTED,
+    SUBMISSION_FAILED,
+
     RUNNING,
+    PENDING_RERUN,
+
+    SUCCEEDING,
     COMPLETED,
+
+    FAILING,
     FAILED,
-    ABORTED
+
+    INVALIDATING,
+
+    ABORTED,
+
+    UNKNOWN,
 }
