@@ -15,7 +15,8 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-core:2.15.2")
     implementation("com.fasterxml.jackson.core:jackson-databind:2.15.2")
     implementation("com.fasterxml.jackson.core:jackson-annotations:2.15.2")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.14.0")
+
 
     // Logging
     implementation("org.apache.logging.log4j:log4j-api:2.20.0")

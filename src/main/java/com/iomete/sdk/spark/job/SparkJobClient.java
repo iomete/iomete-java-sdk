@@ -1,6 +1,7 @@
 package com.iomete.sdk.spark.job;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.iomete.sdk.client.*;
@@ -148,7 +149,16 @@ public class SparkJobClient implements SdkClient {
                 return new String(content.readAllBytes(), StandardCharsets.UTF_8);
             }
         } else {
-            throw new ApiError(response.getStatusLine().getStatusCode(), response.getStatusLine().getReasonPhrase());
+            try (InputStream content = response.getEntity().getContent()) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                JsonNode errorJson = objectMapper.readTree(content);
+
+                int status = errorJson.has("status") ? errorJson.get("status").asInt() : response.getStatusLine().getStatusCode();
+                String errorCode = errorJson.has("errorCode") ? errorJson.get("errorCode").asText() : "UNKNOWN_ERROR";
+                String errorMessage = errorJson.has("errorMessage") ? errorJson.get("errorMessage").asText() : "Unknown error";
+
+                throw new ApiError(status, errorCode, errorMessage);
+            }
         }
     };
 }

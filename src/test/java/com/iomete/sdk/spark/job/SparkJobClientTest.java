@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class SparkJobClientTest {
-    private final String dataPlaneEndpoint = "http(s)://example.com";
+    private final String dataPlaneEndpoint = "https://dev.iomete.cloud";
     private final String accessToken = "api_token";
 
     private final SparkJobClient sparkJobClient = new SparkJobClient(
@@ -108,7 +108,7 @@ public class SparkJobClientTest {
         });
 
         // Assert that the status code is 404
-        assertThat(exception.getStatusCode()).isEqualTo(404);
+        assertThat(exception.getErrorCode()).isEqualTo(404);
     }
 
     @Test

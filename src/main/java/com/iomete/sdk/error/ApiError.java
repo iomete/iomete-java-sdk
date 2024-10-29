@@ -1,22 +1,35 @@
 package com.iomete.sdk.error;
 
 public class ApiError extends RuntimeException {
-    private final int statusCode;
+    private final int status;
+    private final String errorCode;
+    private final String errorMessage;
 
-    public ApiError(int statusCode, String message) {
-        super(message); // Pass the message to the RuntimeException constructor
-        this.statusCode = statusCode;
+    public ApiError(int status, String errorCode, String errorMessage) {
+        super(errorMessage);  // Pass the errorMessage to RuntimeException constructor
+        this.status = status;
+        this.errorCode = errorCode;
+        this.errorMessage = errorMessage;
     }
 
-    public int getStatusCode() {
-        return statusCode;
+    public int getStatus() {
+        return status;
+    }
+
+    public String getErrorCode() {
+        return errorCode;
+    }
+
+    public String getErrorMessage() {
+        return errorMessage;
     }
 
     @Override
     public String toString() {
         return "ApiError{" +
-                "statusCode=" + statusCode +
-                ", message=" + getLocalizedMessage() +
+                "status=" + status +
+                ", errorCode='" + errorCode + '\'' +
+                ", errorMessage='" + errorMessage + '\'' +
                 '}';
     }
 }
