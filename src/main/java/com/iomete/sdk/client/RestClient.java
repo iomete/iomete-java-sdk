@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.net.URI;
 
 public class RestClient {
     private static final Logger logger = LoggerFactory.getLogger(RestClient.class);
@@ -46,6 +47,16 @@ public class RestClient {
         return executeRequest(request, urlPath, responseHandler);
     }
 
+    public <T> T delete(String urlPath, String jsonPayload, ResponseHandler<T> responseHandler) throws ApiError, IOException {
+        HttpDeleteWithBody request = new HttpDeleteWithBody(config.getEndpoint() + urlPath);
+
+        if (jsonPayload != null && !jsonPayload.isEmpty()) {
+            request.setEntity(new StringEntity(jsonPayload));
+            request.setHeader("Content-Type", "application/json");
+        }
+
+        return executeRequest(request, urlPath, responseHandler);
+    }
     private <T> T executeRequest(HttpUriRequest request, String url, ResponseHandler<T> responseHandler) throws ApiError, IOException {
         request.addHeader("Content-Type", "application/json");
         request.addHeader(config.getAuthProvider().getAuthorizationHeader(), config.getAuthProvider().getAuthorizationToken());
@@ -57,6 +68,20 @@ public class RestClient {
             logger.debug("Request duration: " + duration + " ms. Endpoint: " + url);
 
             return responseHandler.handleResponse(response);
+        }
+    }
+    // Inner class to handle DELETE requests with a body
+    private static class HttpDeleteWithBody extends HttpEntityEnclosingRequestBase {
+        public static final String METHOD_NAME = "DELETE";
+
+        public HttpDeleteWithBody(final String uri) {
+            super();
+            setURI(URI.create(uri));
+        }
+
+        @Override
+        public String getMethod() {
+            return METHOD_NAME;
         }
     }
 }
