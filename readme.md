@@ -27,6 +27,7 @@ private final SparkJobClient sparkJobClient = new SparkJobClient(
         new SdkClientConfiguration
                 .Builder()
                 .endpoint(dataPlaneEndpoint)
+                .domain(domain)
                 .authProvider(new AccessTokenAuthProvider(accessToken))
                 .build()
 );
@@ -38,13 +39,19 @@ To create a new Spark Job, use the following code (Replace the values with your 
 
 ```java
 String jobName = "sdk-job-001";
+String namespace = "sdk-namespace";
+String user = "sdk-user";
+String volumeId = "sdk-volume-id";
 
 var sparkJobCreateRequest = SparkJobCreateRequest
     .builder()
     .name(jobName)
+    .namespace(namespace)
+    .jobType(SparkJobType.MANUAL)
+    .jobUser(user)
     .template(ApplicationTemplate
             .builder()
-            .image("iomete/iom-catalog-sync:1.10.0")
+            .image("iomete/iom-catalog-sync:3.0.0")
             .mainClass("com.iomete.catalogsync.App")
             .applicationType(ApplicationType.JVM)
             .instanceConfig(InstanceConfig
@@ -53,7 +60,7 @@ var sparkJobCreateRequest = SparkJobCreateRequest
                     .executorType("exec-x-small")
                     .build()
             )
-            .volumeId("59cdccbd-975b-41c8-b232-18e73fad577f")
+            .volumeId(volumeId)
             .build()
     )
     .build();

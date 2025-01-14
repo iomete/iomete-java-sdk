@@ -15,7 +15,10 @@ public class SparkJobCreateRequest extends JsonModel<SparkJobCreateRequest> {
      * - Should be unique.
      */
     private String name;
+    private String namespace;
     private String description;
+    private String jobUser;
+    private SparkJobType jobType;
     /**
      * Cron expression for scheduling the job.
      */
@@ -30,6 +33,18 @@ public class SparkJobCreateRequest extends JsonModel<SparkJobCreateRequest> {
     // Getters and Setters
     public String getName() {
         return name;
+    }
+
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public String getJobUser() {
+        return jobUser;
+    }
+
+    public SparkJobType getJobType() {
+        return jobType;
     }
 
     public String getDescription() {
@@ -61,6 +76,21 @@ public class SparkJobCreateRequest extends JsonModel<SparkJobCreateRequest> {
 
         public Builder name(String name) {
             sparkJobCreateRequest.name = name;
+            return this;
+        }
+
+        public Builder namespace(String namespace) {
+            sparkJobCreateRequest.namespace = namespace;
+            return this;
+        }
+
+        public Builder jobUser(String jobUser) {
+            sparkJobCreateRequest.jobUser = jobUser;
+            return this;
+        }
+
+        public Builder jobType(SparkJobType jobType) {
+            sparkJobCreateRequest.jobType = jobType;
             return this;
         }
 
