@@ -19,13 +19,17 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class SparkJobClientTest {
-    private final String dataPlaneEndpoint = "http(s)://example.com";
-    private final String accessToken = "api_token";
+    private final String dataPlaneEndpoint = "iomete-endpoint";
+    private final String accessToken = "access-token";
+    private final String namespace = "namespace";
+    private final String domain = "domain_id";
+    private final String user = "username";
 
     private final SparkJobClient sparkJobClient = new SparkJobClient(
             new SdkClientConfiguration
                     .Builder()
                     .endpoint(dataPlaneEndpoint)
+                    .domain(domain)
                     .authProvider(new AccessTokenAuthProvider(accessToken))
                     .build()
     );
@@ -37,9 +41,12 @@ public class SparkJobClientTest {
         var sparkJobCreateRequest = SparkJobCreateRequest
                 .builder()
                 .name(jobName)
+                .namespace(namespace)
+                .jobType(SparkJobType.MANUAL)
+                .jobUser(user)
                 .template(ApplicationTemplate
                         .builder()
-                        .image("iomete/iom-catalog-sync:1.10.0")
+                        .image("iomete/iom-catalog-sync:3.0.0")
                         .mainClass("com.iomete.catalogsync.App")
                         .applicationType(ApplicationType.JVM)
                         .instanceConfig(InstanceConfig
@@ -48,7 +55,7 @@ public class SparkJobClientTest {
                                 .executorType("exec-x-small")
                                 .build()
                         )
-                        .volumeId("59cdccbd-975b-41c8-b232-18e73fad577f")
+                        .volumeId("920a140e-fc90-481a-8ec2-4e395bfa6450")
                         .build()
                 )
                 .build();
@@ -67,10 +74,13 @@ public class SparkJobClientTest {
         var sparkJobCreateRequest = SparkJobCreateRequest
                 .builder()
                 .name(jobName)
+                .namespace(namespace)
+                .jobType(SparkJobType.MANUAL)
+                .jobUser(user)
                 .template(new ApplicationTemplate().fromJson("""
                             {
                               "isDocker": true,
-                              "image": "iomete/iom-catalog-sync:1.10.0",
+                              "image": "iomete/iom-catalog-sync:3.0.0",
                               "imagePullSecrets": [],
                               "mainClass": "com.iomete.catalogsync.App",
                               "mainApplicationFile": "spark-internal",
@@ -82,7 +92,7 @@ public class SparkJobClientTest {
                                 "executorType": "exec-x-small",
                                 "executorCount": 1
                               },
-                              "volumeId": "59cdccbd-975b-41c8-b232-18e73fad577f"
+                              "volumeId": "920a140e-fc90-481a-8ec2-4e395bfa6450"
                             }
                         """)
                 )
@@ -245,9 +255,12 @@ public class SparkJobClientTest {
         var sparkJobCreateRequest = SparkJobCreateRequest
                 .builder()
                 .name(jobName)
+                .namespace(namespace)
+                .jobType(SparkJobType.MANUAL)
+                .jobUser(user)
                 .template(ApplicationTemplate
                         .builder()
-                        .image("iomete/iom-catalog-sync:1.10.0")
+                        .image("iomete/iom-catalog-sync:3.0.0")
                         .mainClass("com.iomete.catalogsync.App")
                         .applicationType(ApplicationType.JVM)
                         .instanceConfig(InstanceConfig
@@ -256,7 +269,7 @@ public class SparkJobClientTest {
                                 .executorType("exec-x-small")
                                 .build()
                         )
-                        .volumeId("59cdccbd-975b-41c8-b232-18e73fad577f")
+                        .volumeId("920a140e-fc90-481a-8ec2-4e395bfa6450")
                         .build()
                 )
                 .build();

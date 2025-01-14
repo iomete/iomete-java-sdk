@@ -16,15 +16,15 @@ import java.util.List;
 
 
 public class SparkJobClient implements SdkClient {
-    private static final String BASE_PATH = "/api/v2/spark-jobs";
-
     private static final Logger logger = LogManager.getLogger(SparkJobClient.class);
 
     private final RestClient restClient;
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+    private final String basePath;
 
     public SparkJobClient(SdkClientConfiguration config) {
         this.restClient = new RestClient(config);
+        this.basePath = "/api/v1/domains/" + config.getDomain() + "/spark/jobs";
         logger.info("IOMETE SparkJobClient initialized with base URL: " + config.getEndpoint());
     }
 
@@ -32,7 +32,7 @@ public class SparkJobClient implements SdkClient {
         String jsonRequest = objectMapper.writeValueAsString(input);
 
         try {
-            String jsonResponse = restClient.post(BASE_PATH, jsonRequest, defaultHandler200);
+            String jsonResponse = restClient.post(basePath, jsonRequest, defaultHandler200);
             return objectMapper.readValue(jsonResponse, SparkJobResponse.class);
         } catch (ApiError | IOException e) {
             logger.error("Failed to create job: " + e.getLocalizedMessage());
@@ -42,7 +42,7 @@ public class SparkJobClient implements SdkClient {
 
     public SparkJobResponse updateJob(String jobId, SparkJobUpdateRequest input) throws ApiError, IOException {
         String jsonRequest = objectMapper.writeValueAsString(input);
-        String url = BASE_PATH + "/" + jobId;
+        String url = basePath + "/" + jobId;
 
         try {
             String jsonResponse = restClient.put(url, jsonRequest, defaultHandler200);
@@ -55,7 +55,7 @@ public class SparkJobClient implements SdkClient {
 
     public List<SparkJobResponse> getJobs() throws ApiError, IOException {
         try {
-            String jsonResponse = restClient.get(BASE_PATH, defaultHandler200);
+            String jsonResponse = restClient.get(basePath, defaultHandler200);
 
             return objectMapper.readValue(jsonResponse, new TypeReference<>() {});
         } catch (ApiError | IOException e) {
@@ -65,7 +65,7 @@ public class SparkJobClient implements SdkClient {
     }
 
     public SparkJobResponse getJobById(String jobId) throws ApiError, IOException {
-        String url = BASE_PATH + "/" + jobId;
+        String url = basePath + "/" + jobId;
 
         try {
             String jsonResponse = restClient.get(url, defaultHandler200);
@@ -78,7 +78,7 @@ public class SparkJobClient implements SdkClient {
     }
 
     public SparkJobResponse deleteJobById(String jobId) throws ApiError, IOException {
-        String url = BASE_PATH + "/" + jobId;
+        String url = basePath + "/" + jobId;
 
         try {
             String jsonResponse = restClient.delete(url, defaultHandler200);
@@ -90,7 +90,7 @@ public class SparkJobClient implements SdkClient {
     }
 
     public List<SparkRunResponse> getJobRuns(String jobId) throws ApiError, IOException {
-        String url = BASE_PATH + "/" + jobId + "/runs";
+        String url = basePath + "/" + jobId + "/runs";
 
         try {
             String jsonResponse = restClient.get(url, defaultHandler200);
@@ -107,7 +107,7 @@ public class SparkJobClient implements SdkClient {
 
     public SparkRunResponse submitJobRun(String jobId, SparkConfigOverride configOverride) throws ApiError, IOException {
         String payload = objectMapper.writeValueAsString(configOverride);
-        String url = BASE_PATH + "/" + jobId + "/runs";
+        String url = basePath + "/" + jobId + "/runs";
 
         try {
             String jsonResponse = restClient.post(url, payload, defaultHandler200);
@@ -119,7 +119,7 @@ public class SparkJobClient implements SdkClient {
     }
 
     public SparkRunResponse cancelJobRun(String jobId, String runId) throws ApiError, IOException {
-        String url = BASE_PATH + "/" + jobId + "/runs/" + runId;
+        String url = basePath + "/" + jobId + "/runs/" + runId;
 
         try {
             String jsonResponse = restClient.delete(url, defaultHandler200);
@@ -131,7 +131,7 @@ public class SparkJobClient implements SdkClient {
     }
 
     public SparkRunResponse getJobRunById(String jobId, String runId) throws ApiError, IOException {
-        String url = BASE_PATH + "/" + jobId + "/runs/" + runId;
+        String url = basePath + "/" + jobId + "/runs/" + runId;
 
         try {
             String jsonResponse = restClient.get(url, defaultHandler200);

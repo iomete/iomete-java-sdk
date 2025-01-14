@@ -11,6 +11,7 @@ public class InstanceConfig extends JsonModel<InstanceConfig> {
     private String driverType;
     private String executorType;
     private int executorCount = 1;
+    private boolean singleNodeDeployment = false;
 
     public InstanceConfig() {}
 
@@ -25,6 +26,11 @@ public class InstanceConfig extends JsonModel<InstanceConfig> {
         this.executorCount = executorCount;
     }
 
+    public InstanceConfig(String driverType) {
+        this.driverType = driverType;
+        this.singleNodeDeployment = true;
+    }
+
     public String getDriverType() {
         return driverType;
     }
@@ -35,6 +41,10 @@ public class InstanceConfig extends JsonModel<InstanceConfig> {
 
     public int getExecutorCount() {
         return executorCount;
+    }
+
+    public boolean isSingleNodeDeployment() {
+        return singleNodeDeployment;
     }
 
     public static Builder builder() {
@@ -64,6 +74,10 @@ public class InstanceConfig extends JsonModel<InstanceConfig> {
 
         public InstanceConfig build() {
             return new InstanceConfig(driverType, executorType, executorCount);
+        }
+
+        public InstanceConfig buildSingleNode() {
+            return new InstanceConfig(driverType);
         }
     }
 

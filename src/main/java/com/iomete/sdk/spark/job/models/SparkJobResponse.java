@@ -14,6 +14,9 @@ import java.util.List;
 public class SparkJobResponse extends JsonModel<SparkJobResponse> {
     private String id;
     private String name;
+    private String namespace;
+    private SparkJobType jobType;
+    private String jobUser;
 
     private String description;
     private List<ResourceTag> resourceTags;
@@ -33,6 +36,30 @@ public class SparkJobResponse extends JsonModel<SparkJobResponse> {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getNamespace() {
+        return namespace;
+    }
+
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+
+    public SparkJobType getJobType() {
+        return jobType;
+    }
+
+    public void setJobType(SparkJobType jobType) {
+        this.jobType = jobType;
+    }
+
+    public String getJobUser() {
+        return jobUser;
+    }
+
+    public void setJobUser(String jobUser) {
+        this.jobUser = jobUser;
     }
 
     public String getName() {
