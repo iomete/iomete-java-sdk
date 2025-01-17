@@ -12,3 +12,10 @@
 ```shell
 ./gradlew clean build shadowJar -x test
 ```
+
+
+## Package Source Code
+
+```shell
+./gradlew packageAll
+```
