@@ -11,8 +11,9 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -38,7 +39,7 @@ public class SparkJobClientTest {
     public void createJob() throws IOException {
         String jobName = "catalog-sync-sdk-001";
 
-        var sparkJobCreateRequest = SparkJobCreateRequest
+        SparkJobCreateRequest sparkJobCreateRequest = SparkJobCreateRequest
                 .builder()
                 .name(jobName)
                 .namespace(namespace)
@@ -71,31 +72,30 @@ public class SparkJobClientTest {
     public void createJobFromJSONTemplate() throws IOException {
         String jobName = "catalog-sync-sdk-002";
 
-        var sparkJobCreateRequest = SparkJobCreateRequest
+        SparkJobCreateRequest sparkJobCreateRequest = SparkJobCreateRequest
                 .builder()
                 .name(jobName)
                 .namespace(namespace)
                 .jobType(SparkJobType.MANUAL)
                 .jobUser(user)
-                .template(new ApplicationTemplate().fromJson("""
-                            {
-                              "isDocker": true,
-                              "image": "iomete/iom-catalog-sync:3.0.0",
-                              "imagePullSecrets": [],
-                              "mainClass": "com.iomete.catalogsync.App",
-                              "mainApplicationFile": "spark-internal",
-                              "applicationType": "jvm",
-                              "envVars": {},
-                              "deps": {},
-                              "instanceConfig": {
-                                "driverType": "driver-x-small",
-                                "executorType": "exec-x-small",
-                                "executorCount": 1
-                              },
-                              "volumeId": "920a140e-fc90-481a-8ec2-4e395bfa6450"
-                            }
-                        """)
-                )
+                .template(new ApplicationTemplate().fromJson(
+                    "{\n" +
+                    "  \"isDocker\": true,\n" +
+                    "  \"image\": \"iomete/iom-catalog-sync:3.0.0\",\n" +
+                    "  \"imagePullSecrets\": [],\n" +
+                    "  \"mainClass\": \"com.iomete.catalogsync.App\",\n" +
+                    "  \"mainApplicationFile\": \"spark-internal\",\n" +
+                    "  \"applicationType\": \"jvm\",\n" +
+                    "  \"envVars\": {},\n" +
+                    "  \"deps\": {},\n" +
+                    "  \"instanceConfig\": {\n" +
+                    "    \"driverType\": \"driver-x-small\",\n" +
+                    "    \"executorType\": \"exec-x-small\",\n" +
+                    "    \"executorCount\": 1\n" +
+                    "  },\n" +
+                    "  \"volumeId\": \"920a140e-fc90-481a-8ec2-4e395bfa6450\"\n" +
+                    "}"
+                ))
                 .build();
 
         SparkJobResponse response = sparkJobClient.createJob(sparkJobCreateRequest);
@@ -126,7 +126,7 @@ public class SparkJobClientTest {
         // No need to create and delete job in production. Job could be created from the UI Console.
         // This is just a sample test that will create temporary job and delete it after the test.
         SparkJobResponse temporarySampleJob = createSampleJob();
-        var runs = sparkJobClient.getJobRuns(temporarySampleJob.getId());
+        List<SparkRunResponse> runs = sparkJobClient.getJobRuns(temporarySampleJob.getId());
 
         assertThat(runs.size()).isEqualTo(0);
 
@@ -192,12 +192,12 @@ public class SparkJobClientTest {
                 temporarySampleJob.getId(),
                 SparkConfigOverride
                         .builder()
-                        .arguments(List.of("arg1", "arg2"))
-                        .envVars(Map.of(
-                                "SDK_ENV_VAR_1", "value1",
-                                "SDK_ENV_VAR_2", "value2"
-                        ))
-                        .resourceTags(List.of(
+                        .arguments(Arrays.asList("arg1", "arg2")).arguments(Arrays.asList("arg1", "arg2"))
+                        .envVars(new HashMap<String, String>() {{
+                            put("SDK_ENV_VAR_1", "value1");
+                            put("SDK_ENV_VAR_2", "value2");
+                        }})
+                        .resourceTags(Arrays.asList(
                                 new ResourceTag("source", "sdk"),
                                 new ResourceTag("env", "dev")
                         ))
@@ -252,7 +252,7 @@ public class SparkJobClientTest {
     private SparkJobResponse createSampleJob() throws IOException {
         String jobName = "catalog-sync-sdk-sample";
 
-        var sparkJobCreateRequest = SparkJobCreateRequest
+        SparkJobCreateRequest sparkJobCreateRequest = SparkJobCreateRequest
                 .builder()
                 .name(jobName)
                 .namespace(namespace)

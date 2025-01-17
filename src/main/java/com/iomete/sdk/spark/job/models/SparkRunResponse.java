@@ -6,6 +6,7 @@ import com.iomete.sdk.models.JsonModel;
 import com.iomete.sdk.models.ResourceTag;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class SparkRunResponse extends JsonModel<SparkRunResponse> {
 
     private SparkRunStatus driverStatus;
     private String driverErrorMessage;
-    private Map<String, Integer> executorsState = Map.of();
+    private Map<String, Integer> executorsState = Collections.emptyMap();
     private int totalExecutors = 1;
     private String terminationTime;
 

@@ -9,6 +9,7 @@ import com.iomete.sdk.spark.job.models.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -57,7 +58,7 @@ public class SparkJobClient implements SdkClient {
         try {
             String jsonResponse = restClient.get(basePath, defaultHandler200);
 
-            return objectMapper.readValue(jsonResponse, new TypeReference<>() {});
+            return objectMapper.readValue(jsonResponse, new TypeReference<List<SparkJobResponse>>() {});
         } catch (ApiError | IOException e) {
             logger.error("Failed to get jobs: " + e.getLocalizedMessage());
             throw e;
@@ -94,7 +95,8 @@ public class SparkJobClient implements SdkClient {
 
         try {
             String jsonResponse = restClient.get(url, defaultHandler200);
-            return objectMapper.readValue(jsonResponse, new TypeReference<>() {});
+            return objectMapper.readValue(jsonResponse, new TypeReference<List<SparkRunResponse>>() {
+            });
         } catch (ApiError | IOException e) {
             logger.error("Failed to get job runs: " + e.getLocalizedMessage());
             throw e;
@@ -145,7 +147,15 @@ public class SparkJobClient implements SdkClient {
     protected ResponseHandler<String> defaultHandler200 = response -> {
         if (response.getStatusLine().getStatusCode() == 200) {
             try (InputStream content = response.getEntity().getContent()) {
-                return new String(content.readAllBytes(), StandardCharsets.UTF_8);
+                ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+                byte[] data = new byte[1024];
+                int bytesRead;
+
+                while ((bytesRead = content.read(data)) != -1) {
+                    buffer.write(data, 0, bytesRead);
+                }
+
+                return buffer.toString(StandardCharsets.UTF_8.name());
             }
         } else {
             throw new ApiError(response.getStatusLine().getStatusCode(), response.getStatusLine().getReasonPhrase());

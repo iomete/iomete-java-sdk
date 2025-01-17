@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.iomete.sdk.models.JsonModel;
 
+import java.util.Collections;
 import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class StatusResponse extends JsonModel<StatusResponse> {
     private ApplicationState applicationState = new ApplicationState();
-    private Map<String, Integer> executorState = Map.of();
+    private Map<String, Integer> executorState = Collections.emptyMap();
     private String terminationTime;
 
     public StatusResponse() {

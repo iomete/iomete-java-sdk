@@ -17,11 +17,14 @@ public class SparkJobResponse extends JsonModel<SparkJobResponse> {
     private String namespace;
     private SparkJobType jobType;
     private String jobUser;
+    private Boolean suspend;
+    private ConcurrencyState concurrency;
+    private SparkJobStatus status;
 
     private String description;
     private List<ResourceTag> resourceTags;
 
-    private SparkJobScheduleResponse schedule;
+    private String schedule;
 
     private ApplicationTemplate template;
 
@@ -62,6 +65,30 @@ public class SparkJobResponse extends JsonModel<SparkJobResponse> {
         this.jobUser = jobUser;
     }
 
+    public Boolean getSuspend() {
+        return suspend;
+    }
+
+    public void setSuspend(Boolean suspend) {
+        this.suspend = suspend;
+    }
+
+    public ConcurrencyState getConcurrency() {
+        return concurrency;
+    }
+
+    public void setConcurrency(ConcurrencyState concurrency) {
+        this.concurrency = concurrency;
+    }
+
+    public SparkJobStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(SparkJobStatus status) {
+        this.status = status;
+    }
+
     public String getName() {
         return name;
     }
@@ -86,11 +113,11 @@ public class SparkJobResponse extends JsonModel<SparkJobResponse> {
         this.resourceTags = resourceTags;
     }
 
-    public SparkJobScheduleResponse getSchedule() {
+    public String getSchedule() {
         return schedule;
     }
 
-    public void setSchedule(SparkJobScheduleResponse schedule) {
+    public void setSchedule(String schedule) {
         this.schedule = schedule;
     }
 
