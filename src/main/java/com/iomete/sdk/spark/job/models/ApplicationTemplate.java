@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iomete.sdk.models.JsonModel;
-import org.apache.logging.log4j.core.config.json.JsonConfigurationFactory;
 
 import java.util.List;
 import java.util.Map;
@@ -29,8 +28,11 @@ public class ApplicationTemplate extends JsonModel<ApplicationTemplate> {
     private String javaOptions;
     private Map<String, String> sparkConf;
     private Dependencies deps;
+    private RestartPolicy restartPolicy;
     private List<ConfigMap> configMaps;
     private InstanceConfig instanceConfig;
+    private String maxExecutionDurationSeconds = "86400";
+
     /**
      * Executor's volume configuration.
      * If not set, then hostPath volume will be used.
@@ -78,6 +80,14 @@ public class ApplicationTemplate extends JsonModel<ApplicationTemplate> {
 
     public Dependencies getDeps() {
         return deps;
+    }
+
+    public RestartPolicy getRestartPolicy() {
+        return restartPolicy;
+    }
+
+    public String getMaxExecutionDurationSeconds() {
+        return maxExecutionDurationSeconds;
     }
 
     public List<ConfigMap> getConfigMaps() {
@@ -147,6 +157,16 @@ public class ApplicationTemplate extends JsonModel<ApplicationTemplate> {
 
         public Builder deps(Dependencies deps) {
             applicationConfig.deps = deps;
+            return this;
+        }
+
+        public Builder restartPolicy(RestartPolicy restartPolicy) {
+            applicationConfig.restartPolicy = restartPolicy;
+            return this;
+        }
+
+        public Builder maxExecutionDurationSeconds(String maxExecutionDurationSeconds) {
+            applicationConfig.maxExecutionDurationSeconds = maxExecutionDurationSeconds;
             return this;
         }
 
