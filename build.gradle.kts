@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.iomete"
-version = "2.0.0"
+version = "2.1.0"
 
 repositories {
     mavenCentral()
@@ -49,12 +49,41 @@ publishing {
 
     publications {
         create<MavenPublication>("maven") {
-            groupId = "com.iomete"
-            artifactId = "iomete-java-sdk"
-            version = "2.0.0"
+            groupId = group.toString()
+            artifactId = rootProject.name
+            version = version
 
             from(components["java"])
         }
     }
 }
 
+fun AbstractArchiveTask.configureArchiveTask() {
+    destinationDirectory.set(layout.buildDirectory.dir("dist"))
+
+    from(projectDir) {
+        include("build.gradle.kts")
+        include("settings.gradle.kts")
+        include("gradlew")
+        include("gradlew.bat")
+        include("LICENSE")
+        include("readme.md")
+        include("development.md")
+        include("gradle/**")
+        include("src/**")
+    }
+}
+
+tasks.register<Zip>("packageDistributionZip") {
+    configureArchiveTask()
+}
+
+tasks.register<Tar>("packageDistributionTar") {
+    configureArchiveTask()
+    compression = Compression.GZIP
+    archiveExtension.set("tar.gz")
+}
+
+tasks.register("packageAll") {
+    dependsOn("packageDistributionZip", "packageDistributionTar")
+}
