@@ -20,11 +20,11 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 
 public class SparkJobClientTest {
-    private final String dataPlaneEndpoint = "iomete-endpoint";
+    private final String dataPlaneEndpoint = "https://dev.iomete.cloud";
     private final String accessToken = "access-token";
-    private final String namespace = "namespace";
-    private final String domain = "domain_id";
-    private final String user = "username";
+    private final String namespace = "iomete-system";
+    private final String domain = "domain";
+    private final String user = "user";
 
     private final SparkJobClient sparkJobClient = new SparkJobClient(
             new SdkClientConfiguration
@@ -43,11 +43,12 @@ public class SparkJobClientTest {
                 .builder()
                 .name(jobName)
                 .namespace(namespace)
+                .bundleId("3fe16353-ddb0-443c-b3f6-8dbfe3914afe")
                 .jobType(SparkJobType.MANUAL)
                 .jobUser(user)
                 .template(ApplicationTemplate
                         .builder()
-                        .image("iomete/iom-catalog-sync:3.0.0")
+                        .image("iomete/iom-catalog-sync:5.0.0")
                         .mainClass("com.iomete.catalogsync.App")
                         .applicationType(ApplicationType.JVM)
                         .instanceConfig(InstanceConfig
@@ -76,6 +77,7 @@ public class SparkJobClientTest {
                 .builder()
                 .name(jobName)
                 .namespace(namespace)
+                .bundleId("3fe16353-ddb0-443c-b3f6-8dbfe3914afe")
                 .jobType(SparkJobType.MANUAL)
                 .jobUser(user)
                 .template(new ApplicationTemplate().fromJson(
@@ -112,6 +114,17 @@ public class SparkJobClientTest {
     }
 
     @Test
+    public void getJobByName() throws IOException {
+        SparkJobResponse temporarySampleJob = createSampleJob();
+
+        SparkJobResponse response = sparkJobClient.getJobByName(temporarySampleJob.getName());
+        assertThat(response.getName()).isEqualTo(temporarySampleJob.getName());
+
+        // Clean up
+        sparkJobClient.deleteJobById(temporarySampleJob.getId());
+    }
+
+    @Test
     public void getJobByNonExistingId() {
         ApiError exception = assertThrows(ApiError.class, () -> {
             sparkJobClient.getJobById("non-existing-id");
@@ -135,7 +148,7 @@ public class SparkJobClientTest {
     }
 
     @Test
-    public void triggerJobAndWaitForCompletion() throws IOException {
+    public void triggerJobAndWaitForCompletion() throws IOException, InterruptedException {
         // No need to create and delete job in production. Job could be created from the UI Console.
         // This is just a sample test that will create temporary job and delete it after the test.
         SparkJobResponse temporarySampleJob = createSampleJob();
@@ -148,6 +161,7 @@ public class SparkJobClientTest {
         long thresholdMinutes = 5; // Adjust threshold as needed
         Instant startTime = Instant.now();
         boolean isCompleted = false;
+        Thread.sleep(10000);
 
         while (Duration.between(startTime, Instant.now()).toMinutes() < thresholdMinutes) {
             System.out.println("Checking job run status for " + runResponse.getName());
@@ -183,7 +197,7 @@ public class SparkJobClientTest {
     }
 
     @Test
-    public void triggerJobWithOverridesAndWaitForCompletion() throws IOException {
+    public void triggerJobWithOverridesAndWaitForCompletion() throws IOException, InterruptedException {
         // No need to create and delete job in production. Job could be created from the UI Console.
         // This is just a sample test that will create temporary job and delete it after the test.
         SparkJobResponse temporarySampleJob = createSampleJob();
@@ -215,6 +229,7 @@ public class SparkJobClientTest {
         long thresholdMinutes = 5; // Adjust threshold as needed
         Instant startTime = Instant.now();
         boolean isCompleted = false;
+        Thread.sleep(10000);
 
         while (Duration.between(startTime, Instant.now()).toMinutes() < thresholdMinutes) {
             System.out.println("Checking job run status for " + runResponse.getName());
@@ -256,6 +271,7 @@ public class SparkJobClientTest {
                 .builder()
                 .name(jobName)
                 .namespace(namespace)
+                .bundleId("3fe16353-ddb0-443c-b3f6-8dbfe3914afe")
                 .jobType(SparkJobType.MANUAL)
                 .jobUser(user)
                 .template(ApplicationTemplate
@@ -269,7 +285,7 @@ public class SparkJobClientTest {
                                 .executorType("exec-x-small")
                                 .build()
                         )
-                        .volumeId("920a140e-fc90-481a-8ec2-4e395bfa6450")
+                        .volumeId("32bccf34-1404-40f5-86d9-9e3c566181a5")
                         .build()
                 )
                 .build();

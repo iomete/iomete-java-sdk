@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.iomete.sdk.client.*;
 import com.iomete.sdk.error.ApiError;
+import com.iomete.sdk.models.PageResponse;
 import com.iomete.sdk.spark.job.models.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -25,8 +26,8 @@ public class SparkJobClient implements SdkClient {
 
     public SparkJobClient(SdkClientConfiguration config) {
         this.restClient = new RestClient(config);
-        this.basePath = "/api/v1/domains/" + config.getDomain() + "/spark/jobs";
-        logger.info("IOMETE SparkJobClient initialized with base URL: " + config.getEndpoint());
+        this.basePath = "/api/v2/domains/" + config.getDomain() + "/sdk/spark/jobs";
+        logger.info("IOMETE SparkJobClient initialized with base URL: {}", config.getEndpoint());
     }
 
     public SparkJobResponse createJob(SparkJobCreateRequest input) throws ApiError, IOException {
@@ -36,7 +37,7 @@ public class SparkJobClient implements SdkClient {
             String jsonResponse = restClient.post(basePath, jsonRequest, defaultHandler200);
             return objectMapper.readValue(jsonResponse, SparkJobResponse.class);
         } catch (ApiError | IOException e) {
-            logger.error("Failed to create job: " + e.getLocalizedMessage());
+            logger.error("Failed to create job: {}", e.getLocalizedMessage());
             throw e;
         }
     }
@@ -49,7 +50,7 @@ public class SparkJobClient implements SdkClient {
             String jsonResponse = restClient.put(url, jsonRequest, defaultHandler200);
             return objectMapper.readValue(jsonResponse, SparkJobResponse.class);
         } catch (ApiError | IOException e) {
-            logger.error("Failed to update job: " + e.getLocalizedMessage());
+            logger.error("Failed to update job: {}", e.getLocalizedMessage());
             throw e;
         }
     }
@@ -58,9 +59,11 @@ public class SparkJobClient implements SdkClient {
         try {
             String jsonResponse = restClient.get(basePath, defaultHandler200);
 
-            return objectMapper.readValue(jsonResponse, new TypeReference<List<SparkJobResponse>>() {});
+            PageResponse<SparkJobResponse> pageResponse = objectMapper.readValue(
+                    jsonResponse, new TypeReference<PageResponse<SparkJobResponse>>() {});
+            return pageResponse.getItems();
         } catch (ApiError | IOException e) {
-            logger.error("Failed to get jobs: " + e.getLocalizedMessage());
+            logger.error("Failed to get jobs: {}", e.getLocalizedMessage());
             throw e;
         }
     }
@@ -73,7 +76,20 @@ public class SparkJobClient implements SdkClient {
 
             return objectMapper.readValue(jsonResponse, SparkJobResponse.class);
         } catch (ApiError | IOException e) {
-            logger.error("Failed to get job by ID: " + e.getLocalizedMessage());
+            logger.error("Failed to get job by ID: {}", e.getLocalizedMessage());
+            throw e;
+        }
+    }
+
+    public SparkJobResponse getJobByName(String jobName) throws ApiError, IOException {
+        String url = basePath + "/name/" + jobName;
+
+        try {
+            String jsonResponse = restClient.get(url, defaultHandler200);
+
+            return objectMapper.readValue(jsonResponse, SparkJobResponse.class);
+        } catch (ApiError | IOException e) {
+            logger.error("Failed to get job by name: {}", e.getLocalizedMessage());
             throw e;
         }
     }
@@ -85,7 +101,7 @@ public class SparkJobClient implements SdkClient {
             String jsonResponse = restClient.delete(url, defaultHandler200);
             return objectMapper.readValue(jsonResponse, SparkJobResponse.class);
         } catch (ApiError | IOException e) {
-            logger.error("Failed to delete job by ID: " + e.getLocalizedMessage());
+            logger.error("Failed to delete job by ID: {}", e.getLocalizedMessage());
             throw e;
         }
     }
@@ -98,7 +114,7 @@ public class SparkJobClient implements SdkClient {
             return objectMapper.readValue(jsonResponse, new TypeReference<List<SparkRunResponse>>() {
             });
         } catch (ApiError | IOException e) {
-            logger.error("Failed to get job runs: " + e.getLocalizedMessage());
+            logger.error("Failed to get job runs: {}", e.getLocalizedMessage());
             throw e;
         }
     }
@@ -115,7 +131,7 @@ public class SparkJobClient implements SdkClient {
             String jsonResponse = restClient.post(url, payload, defaultHandler200);
             return objectMapper.readValue(jsonResponse, SparkRunResponse.class);
         } catch (ApiError | IOException e) {
-            logger.error("Failed to submit job run: " + e.getLocalizedMessage());
+            logger.error("Failed to submit job run: {}", e.getLocalizedMessage());
             throw e;
         }
     }
@@ -127,7 +143,7 @@ public class SparkJobClient implements SdkClient {
             String jsonResponse = restClient.delete(url, defaultHandler200);
             return objectMapper.readValue(jsonResponse, SparkRunResponse.class);
         } catch (ApiError | IOException e) {
-            logger.error("Failed to cancel job run: " + e.getLocalizedMessage());
+            logger.error("Failed to cancel job run: {}", e.getLocalizedMessage());
             throw e;
         }
     }
@@ -139,7 +155,7 @@ public class SparkJobClient implements SdkClient {
             String jsonResponse = restClient.get(url, defaultHandler200);
             return objectMapper.readValue(jsonResponse, SparkRunResponse.class);
         } catch (ApiError | IOException e) {
-            logger.error("Failed to get job run by ID: " + e.getLocalizedMessage());
+            logger.error("Failed to get job run by ID: {}", e.getLocalizedMessage());
             throw e;
         }
     }

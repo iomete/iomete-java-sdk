@@ -54,7 +54,7 @@ public class RestClient {
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             long endTime = System.nanoTime();
             long duration = (endTime - startTime) / 1_000_000;
-            logger.debug("Request duration: " + duration + " ms. Endpoint: " + url);
+            logger.debug("Request duration: {} ms. Endpoint: {}", duration, url);
 
             return responseHandler.handleResponse(response);
         }

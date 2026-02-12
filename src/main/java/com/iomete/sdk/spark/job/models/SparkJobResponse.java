@@ -2,7 +2,6 @@ package com.iomete.sdk.spark.job.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iomete.sdk.models.JsonModel;
 import com.iomete.sdk.models.ResourceTag;
 
@@ -18,6 +17,9 @@ public class SparkJobResponse extends JsonModel<SparkJobResponse> {
     private SparkJobType jobType;
     private String jobUser;
     private Boolean suspend;
+    private Bundle bundle;
+    private FlowType flow;
+    private Priority priority;
     private ConcurrencyState concurrency;
     private SparkJobStatus status;
 
@@ -79,6 +81,30 @@ public class SparkJobResponse extends JsonModel<SparkJobResponse> {
 
     public void setConcurrency(ConcurrencyState concurrency) {
         this.concurrency = concurrency;
+    }
+
+    public Bundle getBundle() {
+        return bundle;
+    }
+
+    public void setBundle(Bundle bundle) {
+        this.bundle = bundle;
+    }
+
+    public FlowType getFlow() {
+        return flow;
+    }
+
+    public void setFlow(FlowType flow) {
+        this.flow = flow;
+    }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
     }
 
     public SparkJobStatus getStatus() {
