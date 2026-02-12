@@ -5,7 +5,7 @@ plugins {
 }
 
 group = "com.iomete"
-version = "3.0.0-SNAPSHOT"
+version = "3.0.0"
 
 repositories {
     mavenCentral()
