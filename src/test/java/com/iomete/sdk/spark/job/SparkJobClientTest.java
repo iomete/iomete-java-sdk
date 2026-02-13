@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 public class SparkJobClientTest {
     private final String dataPlaneEndpoint = "https://dev.iomete.cloud";
     private final String accessToken = "access-token";
-    private final String namespace = "iomete-system";
+    private final String namespace = "namespace";
     private final String domain = "domain";
     private final String user = "user";
 
@@ -34,6 +34,42 @@ public class SparkJobClientTest {
                     .authProvider(new AccessTokenAuthProvider(accessToken))
                     .build()
     );
+
+    @Test
+    public void createPriorityJob() throws IOException {
+        String jobName = "catalog-sync-priority-sdk-001";
+
+        SparkJobCreateRequest sparkJobCreateRequest = SparkJobCreateRequest
+                .builder()
+                .name(jobName)
+                .namespace(namespace)
+                .bundleId("3fe16353-ddb0-443c-b3f6-8dbfe3914afe")
+                .jobType(SparkJobType.MANUAL)
+                .jobUser(user)
+                .flow(FlowType.PRIORITY)
+                .priority(Priority.HIGH)
+                .template(ApplicationTemplate
+                        .builder()
+                        .image("iomete/iom-catalog-sync:5.0.0")
+                        .mainClass("com.iomete.catalogsync.App")
+                        .applicationType(ApplicationType.JVM)
+                        .instanceConfig(InstanceConfig
+                                .builder()
+                                .driverType("driver-x-small")
+                                .executorType("exec-x-small")
+                                .build()
+                        )
+                        .volumeId("920a140e-fc90-481a-8ec2-4e395bfa6450")
+                        .build()
+                )
+                .build();
+
+        SparkJobResponse response = sparkJobClient.createJob(sparkJobCreateRequest);
+        System.out.println(response.toJson());
+
+//         Clean up
+        sparkJobClient.deleteJobById(response.getId());
+    }
 
     @Test
     public void createJob() throws IOException {
@@ -276,7 +312,7 @@ public class SparkJobClientTest {
                 .jobUser(user)
                 .template(ApplicationTemplate
                         .builder()
-                        .image("iomete/iom-catalog-sync:3.0.0")
+                        .image("iomete/iom-catalog-sync:5.0.0")
                         .mainClass("com.iomete.catalogsync.App")
                         .applicationType(ApplicationType.JVM)
                         .instanceConfig(InstanceConfig
