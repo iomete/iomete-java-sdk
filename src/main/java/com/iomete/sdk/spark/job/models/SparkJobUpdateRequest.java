@@ -10,6 +10,9 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SparkJobUpdateRequest extends JsonModel<SparkJobUpdateRequest> {
     private String description;
+    private String bundleId;
+    private FlowType flow = FlowType.LEGACY;
+    private Priority priority = Priority.NORMAL;
     private String schedule;
     private ConcurrencyState concurrency = ConcurrencyState.FORBID;
     private ApplicationTemplate template = new ApplicationTemplate();
@@ -21,6 +24,18 @@ public class SparkJobUpdateRequest extends JsonModel<SparkJobUpdateRequest> {
     // Getters and Setters
     public String getDescription() {
         return description;
+    }
+
+    public String getBundleId() {
+        return bundleId;
+    }
+
+    public FlowType getFlow() {
+        return flow;
+    }
+
+    public Priority getPriority() {
+        return priority;
     }
 
     public String getSchedule() {
@@ -48,6 +63,21 @@ public class SparkJobUpdateRequest extends JsonModel<SparkJobUpdateRequest> {
 
         public Builder description(String description) {
             sparkJobUpdateRequest.description = description;
+            return this;
+        }
+
+        public Builder bundleId(String bundleId) {
+            sparkJobUpdateRequest.bundleId = bundleId;
+            return this;
+        }
+
+        public Builder flow(FlowType flow) {
+            sparkJobUpdateRequest.flow = flow;
+            return this;
+        }
+
+        public Builder priority(Priority priority) {
+            sparkJobUpdateRequest.priority = priority;
             return this;
         }
 

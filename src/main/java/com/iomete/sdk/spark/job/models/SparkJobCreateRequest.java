@@ -1,7 +1,6 @@
 package com.iomete.sdk.spark.job.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.iomete.sdk.models.JsonModel;
 import com.iomete.sdk.models.ResourceTag;
 
@@ -23,6 +22,9 @@ public class SparkJobCreateRequest extends JsonModel<SparkJobCreateRequest> {
      * Cron expression for scheduling the job.
      */
     private String schedule;
+    private String bundleId;
+    private FlowType flow = FlowType.LEGACY;
+    private Priority priority = Priority.NORMAL;
     private ConcurrencyState concurrency = ConcurrencyState.FORBID;
     private ApplicationTemplate template = new ApplicationTemplate();
     private List<ResourceTag> resourceTags;
@@ -49,6 +51,18 @@ public class SparkJobCreateRequest extends JsonModel<SparkJobCreateRequest> {
 
     public String getDescription() {
         return description;
+    }
+
+    public String getBundleId() {
+        return bundleId;
+    }
+
+    public FlowType getFlow() {
+        return flow;
+    }
+
+    public Priority getPriority() {
+        return priority;
     }
 
     public String getSchedule() {
@@ -96,6 +110,21 @@ public class SparkJobCreateRequest extends JsonModel<SparkJobCreateRequest> {
 
         public Builder description(String description) {
             sparkJobCreateRequest.description = description;
+            return this;
+        }
+
+        public Builder bundleId(String bundleId) {
+            sparkJobCreateRequest.bundleId = bundleId;
+            return this;
+        }
+
+        public Builder flow(FlowType flow) {
+            sparkJobCreateRequest.flow = flow;
+            return this;
+        }
+
+        public Builder priority(Priority priority) {
+            sparkJobCreateRequest.priority = priority;
             return this;
         }
 
