@@ -25,7 +25,7 @@ dependencies {
     // HTTP Client
     implementation("org.apache.httpcomponents:httpclient:4.5.14")
 
-    testImplementation(platform("org.junit:junit-bom:5.10.5"))
+    testImplementation(platform("org.junit:junit-bom:5.14.4"))
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.5")
     testImplementation("org.mockito:mockito-core:5.11.0")
     testImplementation("org.mockito:mockito-junit-jupiter:5.11.0")
