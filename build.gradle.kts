@@ -30,7 +30,7 @@ dependencies {
     testImplementation("org.mockito:mockito-core:5.11.0")
     testImplementation("org.mockito:mockito-junit-jupiter:5.11.0")
 
-    testImplementation("org.assertj:assertj-core:3.21.0")
+    testImplementation("org.assertj:assertj-core:3.27.7")
 }
 
 tasks.jar {}
